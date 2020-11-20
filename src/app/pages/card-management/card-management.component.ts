@@ -242,7 +242,7 @@ export class CardManagementComponent implements OnInit {
       symbol: 'USD',
       description: this.name,
       expirationInHours: 24 * 365,
-      acceptedCurrencies: 'CARD',
+      acceptedCurrencies: 'ALL',
       // nameOnCard: this.name,
       limitationTemplate: {
         name: this.name,
