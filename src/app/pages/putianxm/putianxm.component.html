@@ -1,0 +1,250 @@
+<div class="putianxm">
+  <div class="sel">
+    <nz-select [(ngModel)]="group1" class="item">
+      <nz-option
+        nzValue="23"
+        nzLabel="
+      Referer URL
+    "
+      ></nz-option>
+      <nz-option
+        nzValue="2"
+        nzLabel="
+      Paths
+  "
+      ></nz-option>
+      <nz-option
+        nzValue="27"
+        nzLabel="
+      T1:账号编号
+    "
+      ></nz-option>
+      <nz-option nzValue="26" nzLabel="Hour of day"></nz-option>
+    </nz-select>
+    <nz-select [(ngModel)]="date" class="item">
+      <nz-option nzValue="1" nzLabel="Today"></nz-option>
+      <nz-option nzValue="2" nzLabel="Yesterday"></nz-option>
+      <nz-option nzValue="11" nzLabel="This Week"></nz-option>
+      <nz-option nzValue="13" nzLabel="Last 2 Days"></nz-option>
+      <nz-option nzValue="14" nzLabel="Last 3 Days"></nz-option>
+      <nz-option nzValue="3" nzLabel="Last 7 Days"></nz-option>
+      <nz-option nzValue="4" nzLabel="Last 14 Days"></nz-option>
+      <nz-option nzValue="5" nzLabel="This Month"></nz-option>
+      <nz-option nzValue="6" nzLabel="Last Month"></nz-option>
+      <nz-option nzValue="7" nzLabel="This Year"></nz-option>
+      <nz-option nzValue="8" nzLabel="Last Year"></nz-option>
+      <nz-option nzValue="9" nzLabel="All Time"></nz-option>
+      <nz-option nzValue="12" nzLabel="Custom Date"></nz-option>
+      <nz-option nzValue="10" nzLabel="Custom Time"></nz-option>
+    </nz-select>
+    <nz-select [(ngModel)]="timezone" class="item">
+      <nz-option nzValue="-12:00" nzLabel="-12"></nz-option>
+      <nz-option nzValue="-11:00" nzLabel="-11"></nz-option>
+      <nz-option nzValue="-10:00" nzLabel="-10"></nz-option>
+      <nz-option nzValue="-9:30" nzLabel="-9:30"></nz-option>
+      <nz-option nzValue="-9:00" nzLabel="-9"></nz-option>
+      <nz-option nzValue="-8:00" nzLabel="-8"></nz-option>
+      <nz-option nzValue="-7:00" nzLabel="-7"></nz-option>
+      <nz-option nzValue="-6:00" nzLabel="-6"></nz-option>
+      <nz-option nzValue="-5:00" nzLabel="-5"></nz-option>
+      <nz-option nzValue="-4:00" nzLabel="-4"></nz-option>
+      <nz-option nzValue="-3:30" nzLabel="-3:30"></nz-option>
+      <nz-option nzValue="-3:00" nzLabel="-3"></nz-option>
+      <nz-option nzValue="-2:00" nzLabel="-2"></nz-option>
+      <nz-option nzValue="-1:00" nzLabel="-1"></nz-option>
+      <nz-option nzValue="+0:00" nzLabel="0"></nz-option>
+      <nz-option nzValue="+1:00" nzLabel="+1"></nz-option>
+      <nz-option nzValue="+2:00" nzLabel="+2"></nz-option>
+      <nz-option nzValue="+3:00" nzLabel="+3"></nz-option>
+      <nz-option nzValue="+3:30" nzLabel="+3:30"></nz-option>
+      <nz-option nzValue="+4:00" nzLabel="+4"></nz-option>
+      <nz-option nzValue="+4:30" nzLabel="+4:30"></nz-option>
+      <nz-option nzValue="+5:00" nzLabel="+5"></nz-option>
+      <nz-option nzValue="+5:30" nzLabel="+5:30"></nz-option>
+      <nz-option nzValue="+5:45" nzLabel="+5:45"></nz-option>
+      <nz-option nzValue="+6:00" nzLabel="+6"></nz-option>
+      <nz-option nzValue="+6:30" nzLabel="+6:30"></nz-option>
+      <nz-option nzValue="+7:00" nzLabel="+7"></nz-option>
+      <nz-option nzValue="+8:00" nzLabel="+8"></nz-option>
+      <nz-option nzValue="+8:45" nzLabel="+8:45"></nz-option>
+      <nz-option nzValue="+9:00" nzLabel="+9"></nz-option>
+      <nz-option nzValue="+10:00" nzLabel="+10"></nz-option>
+      <nz-option nzValue="+10:30" nzLabel="+10:30"></nz-option>
+      <nz-option nzValue="+11:00" nzLabel="+11"></nz-option>
+      <nz-option nzValue="+12:00" nzLabel="+12"></nz-option>
+      <nz-option nzValue="+12:45" nzLabel="+12:45"></nz-option>
+      <nz-option nzValue="+13:00" nzLabel="+13"></nz-option>
+      <nz-option nzValue="+14:00" nzLabel="+14"></nz-option>
+    </nz-select>
+
+    <nz-range-picker
+      nzFormat="yyyy-MM-dd"
+      [(ngModel)]="dataRanger"
+      class="marR20"
+    ></nz-range-picker>
+    <nz-select [(ngModel)]="order_name" class="item">
+      <nz-option
+        *ngFor="let item of filterList"
+        nzValue="{{ item }}"
+        nzLabel="{{ item }}"
+      ></nz-option>
+    </nz-select>
+    <button
+      nz-button
+      nzType="primary"
+      (click)="getData()"
+      [nzLoading]="
+        loading10 || loading11 || loading16 || loading17 || loading18
+      "
+    >
+      查询
+    </button>
+  </div>
+  <nz-tabset>
+    <nz-tab nzTitle="woke-lsw-keto-us" (nzClick)="changeId(10)">
+      <div class="ad-chart">
+        <nz-table
+          [nzData]="listData10"
+          nzTableLayout="fixed"
+          [nzLoading]="loading10"
+        >
+          <thead>
+            <tr>
+              <th *ngFor="let column of listOfColumn">
+                {{ column.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listData10">
+              <td>{{ data.name }}</td>
+              <td>{{ data.clicks }}</td>
+              <td>{{ data.lp_clicks }}</td>
+              <td>{{ data.lp_ctr }}%</td>
+              <td>{{ data.leads }}</td>
+              <td>{{ data.cr }}%</td>
+              <td>{{ data.epc }}</td>
+              <td>{{ data.revenue }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="woke-xy-keto-us" (nzClick)="changeId(11)">
+      <div class="ad-chart">
+        <nz-table
+          [nzData]="listData11"
+          nzTableLayout="fixed"
+          [nzLoading]="loading11"
+        >
+          <thead>
+            <tr>
+              <th *ngFor="let column of listOfColumn">
+                {{ column.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listData11">
+              <td>{{ data.name }}</td>
+              <td>{{ data.clicks }}</td>
+              <td>{{ data.lp_clicks }}</td>
+              <td>{{ data.lp_ctr }}%</td>
+              <td>{{ data.leads }}</td>
+              <td>{{ data.cr }}%</td>
+              <td>{{ data.epc }}</td>
+              <td>{{ data.revenue }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="woke-lsw-cbd-us" (nzClick)="changeId(16)">
+      <div class="ad-chart">
+        <nz-table
+          [nzData]="listData16"
+          nzTableLayout="fixed"
+          [nzLoading]="loading16"
+        >
+          <thead>
+            <tr>
+              <th *ngFor="let column of listOfColumn">
+                {{ column.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listData16">
+              <td>{{ data.name }}</td>
+              <td>{{ data.clicks }}</td>
+              <td>{{ data.lp_clicks }}</td>
+              <td>{{ data.lp_ctr }}%</td>
+              <td>{{ data.leads }}</td>
+              <td>{{ data.cr }}%</td>
+              <td>{{ data.epc }}</td>
+              <td>{{ data.revenue }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="woke-lsw-keto-au" (nzClick)="changeId(17)">
+      <div class="ad-chart">
+        <nz-table
+          [nzData]="listData17"
+          nzTableLayout="fixed"
+          [nzLoading]="loading17"
+        >
+          <thead>
+            <tr>
+              <th *ngFor="let column of listOfColumn">
+                {{ column.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listData17">
+              <td>{{ data.name }}</td>
+              <td>{{ data.clicks }}</td>
+              <td>{{ data.lp_clicks }}</td>
+              <td>{{ data.lp_ctr }}%</td>
+              <td>{{ data.leads }}</td>
+              <td>{{ data.cr }}%</td>
+              <td>{{ data.epc }}</td>
+              <td>{{ data.revenue }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="woke-lsw-keto-ca" (nzClick)="changeId(18)">
+      <div class="ad-chart">
+        <nz-table
+          [nzData]="listData18"
+          nzTableLayout="fixed"
+          [nzLoading]="loading18"
+        >
+          <thead>
+            <tr>
+              <th *ngFor="let column of listOfColumn">
+                {{ column.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of listData18">
+              <td>{{ data.name }}</td>
+              <td>{{ data.clicks }}</td>
+              <td>{{ data.lp_clicks }}</td>
+              <td>{{ data.lp_ctr }}%</td>
+              <td>{{ data.leads }}</td>
+              <td>{{ data.cr }}%</td>
+              <td>{{ data.epc }}</td>
+              <td>{{ data.revenue }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-tab>
+  </nz-tabset>
+</div>

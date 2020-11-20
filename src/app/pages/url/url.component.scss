@@ -1,0 +1,24 @@
+.app-url {
+  text-align: center;
+  .add {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: start;
+    .box {
+      width: 300px;
+      margin: 0 20px;
+    }
+    .url-list {
+      div {
+        padding-bottom: 10px;
+      }
+    }
+  }
+  .cant {
+    cursor: no-drop;
+  }
+  .addBtn {
+    margin: 20px 0;
+  }
+}

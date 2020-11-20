@@ -1,0 +1,19 @@
+<div class="index">
+  <div class="list">
+    <div class="item">
+      <div class="label">余额</div>
+      <div class="cont">{{ balances?.availableAmount.toLocaleString() }} {{ balances?.symbol }}</div>
+    </div>
+    <div class="item">
+      <div class="label">已开卡/可开卡</div>
+      <div class="cont">
+        {{ cardsHasOpend.toLocaleString() }} /
+        {{ cardsNumLimit.toLocaleString() }}
+      </div>
+    </div>
+  </div>
+  <!-- <nz-countdown [nzValue]="deadline" [nzTitle]="'Day Level'" [nzFormat]="'D 天 H 时 m 分 s 秒'"></nz-countdown> -->
+</div>
+<!-- 1.卡status随时间改变问题 -->
+<!-- 2.登录验证权限 -->
+<!-- 3.tag放在商户描述  ok -->

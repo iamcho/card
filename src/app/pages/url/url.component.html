@@ -1,0 +1,62 @@
+<div class="app-url">
+  <div class="add">
+    <div class="box">
+      <textarea
+        nz-input
+        placeholder="输入域名,一行一个 例如：xxx.com"
+        [nzAutosize]="{ minRows: 8 }"
+        [(ngModel)]="url"
+      ></textarea>
+
+      <button
+        nz-button
+        nzType="primary"
+        (click)="addUrl()"
+        [nzLoading]="isLoading"
+        [ngClass]="{ addBtn: true, cant: !url || !dns }"
+      >
+        添加域名
+      </button>
+    </div>
+    <div class="url-list">
+      <div *ngFor="let item of data.domain">
+        {{ item.url }}
+        <nz-tag [nzColor]="'#87d068'" *ngIf="item.success"> 添加成功 </nz-tag>
+        <nz-tag
+          [nzColor]="'#f50'"
+          *ngIf="!item.success"
+          nz-tooltip
+          nzTooltipTitle="{{ item.msg }}"
+        >
+          添加失败
+        </nz-tag>
+      </div>
+    </div>
+    <div class="box">
+      <textarea
+        nz-input
+        placeholder="输入dns解析,一行一个 例如：@,A,52.91.82.118"
+        [nzAutosize]="{ minRows: 8 }"
+        [(ngModel)]="dns"
+      ></textarea>
+      <nz-radio-group [(ngModel)]="radioValue">
+        <label nz-radio nzValue="run.php">域名和dns每条一一对应</label>
+        <label nz-radio nzValue="1.php">全部域名都设置为dns第一条</label>
+      </nz-radio-group>
+    </div>
+    <div class="url-list">
+      <div *ngFor="let item of data.dns; let i = index">
+        {{ data.domain[i].url }}
+        <nz-tag [nzColor]="'#87d068'" *ngIf="item.success"> 解析成功 </nz-tag>
+        <nz-tag
+          [nzColor]="'#f50'"
+          *ngIf="!item.success"
+          nz-tooltip
+          nzTooltipTitle="{{ item.msg }}"
+        >
+          解析失败
+        </nz-tag>
+      </div>
+    </div>
+  </div>
+</div>

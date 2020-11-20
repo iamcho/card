@@ -1,20 +1,168 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<nz-layout class="app-layout">
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+  >
+    <div class="sidebar-logo">
+        <img src="/assets/images/hiswift.png" alt="logo" />
+        <h1>Hi Swift</h1>
+    </div>
+    <ul
+      nz-menu
+      nzTheme="dark"
+      nzMode="inline"
+      [nzInlineCollapsed]="isCollapsed"
+    >
+      <li nz-submenu nzOpen nzTitle="信用卡管理" nzIcon="dashboard">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/welcome">首页</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/card-management">卡管理</a>
+          </li>
+          <!-- <li nz-menu-item nzMatchRouter>
+            <a routerLink="/calendar">日历开销(未开发)</a>
+          </li> -->
+          <!-- <li nz-menu-item nzMatchRouter>
+            <a routerLink="/putianxm">putianxm报表</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/ids">文案</a>
+          </li> -->
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+          <i
+            class="trigger"
+            nz-icon
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          ></i>
+        </span>
+        <div class="user-set">
+          <div class="space"></div>
+          <div class="login-in" (click)="loginModalvisible = true" *ngIf="!isLogin">
+            登录
+          </div>
+          <div class="user-name" *ngIf="isLogin">
+            {{isLoginNm}}
+          </div>
+          <div class="user-name" (click)="createUserModalvisible = true" *ngIf="isAdmin">
+            添加用户
+          </div>
+          <div class="user-name" (click)="updateUserModalvisible = true" *ngIf="isAdmin">
+            修改用户权限
+          </div>
+          <div class="login-out" (click)="logout()" *ngIf="isLogin">
+            退出
+          </div>
+        </div>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+<nz-modal [(nzVisible)]="loginModalvisible" nzTitle="登录" (nzOnCancel)="loginModalvisible = false" 
+[nzCancelText]="null"
+[nzOkText]="null"
+[nzMaskClosable]="false"
+nzWrapClassName="loginModalCss"
+(nzOnOk)="handleOk()">
+  <div class="line">
+    <div class="label">用户名：</div>
+    <div class="input-val"><input nz-input placeholder="请输入用户名" [(ngModel)]="username" /></div>
+  </div>
+  <div class="line">
+    <div class="label">密码：</div>
+    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="password" /></div>
+  </div>
+  <div class="btns">
+    <button nz-button nzType="primary" [nzLoading]="loginLoading" [disabled]="!username || !password" (click)="login()">登录</button>
+  </div>
+</nz-modal>
 
+
+<nz-modal [(nzVisible)]="createUserModalvisible" nzTitle="添加新用户" (nzOnCancel)="createUserModalvisible = false" 
+[nzCancelText]="null"
+[nzOkText]="null"
+[nzMaskClosable]="false"
+nzWrapClassName="loginModalCss"
+(nzOnOk)="handleOk()">
+  <div class="line">
+    <div class="label">用户名：</div>
+    <div class="input-val"><input nz-input placeholder="请输入用户名" [(ngModel)]="usr" /></div>
+  </div>
+  <div class="line">
+    <div class="label">密码：</div>
+    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="pwd" /></div>
+  </div>
+  <div class="line">
+    <div class="label">确认密码：</div>
+    <div class="input-val"><input nz-input placeholder="请确认密码" [(ngModel)]="pwd2" /></div>
+  </div>
+  <div class="line">
+    <div class="label">host：</div>
+    <!-- <div class="input-val"><input nz-input placeholder="请输入 host" [disabled]="true" [(ngModel)]="host" /></div> -->
+    <nz-radio-group [(ngModel)]="host">
+      <label nz-radio nzValue="https://integrations.meshpayments.com">正式环境</label>
+      <label nz-radio nzValue="https://staging-integrations.meshpayments.com">测试环境</label>
+    </nz-radio-group>
+  </div>
+  <div class="line">
+    <div class="label">key：</div>
+    <div class="input-val"><input nz-input placeholder="请输入 key" [(ngModel)]="keyy" /></div>
+  </div>
+  <div class="line">
+    <div class="label">secret：</div>
+    <div class="input-val"><input nz-input placeholder="请输入 secret" [(ngModel)]="secret" /></div>
+  </div>
+  <div class="btns">
+    <button nz-button nzType="primary" [nzLoading]="createLoading" [disabled]="!usr || !pwd || !keyy || !secret"  (click)="addUser()">注册</button>
+  </div>
+</nz-modal>
+
+
+
+<nz-modal [(nzVisible)]="updateUserModalvisible" nzTitle="修改用户权限" (nzOnCancel)="updateUserModalvisible = false" 
+[nzCancelText]="null"
+[nzOkText]="null"
+[nzMaskClosable]="false"
+nzWrapClassName="loginModalCss"
+(nzOnOk)="handleOk()">
+  <div class="line">
+    <div class="label">用户名：</div>
+    <div class="input-val maxNumBox">
+      <input nz-input placeholder="请输入用户名" [(ngModel)]="updateUsr" />
+      <button nz-button nzType="primary" class="margin20" [disabled]="!updateUsr" (click)="getUserCounts()">查看之前开卡数</button>
+    </div>
+  </div>
+  <div class="line">
+    <div class="label">最大开卡数：</div>
+    <div class="input-val maxNumBox">
+      <nz-input-number
+      [(ngModel)]="updatecardNum"
+      [nzMin]="0"
+      [nzMax]="10000000"
+      [nzStep]="100"
+      class="maxNum"
+      ></nz-input-number>
+      <div class="margin20">注：0-10000000之间</div>
+    </div>
+  </div>
+  <div class="btns">
+    <button nz-button nzType="primary" [nzLoading]="updateLoading" [disabled]="!updateUsr || (!updatecardNum && updatecardNum!==0)"  (click)="updateUser()">确定</button>
+  </div>
+</nz-modal>

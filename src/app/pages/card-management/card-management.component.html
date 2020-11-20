@@ -1,0 +1,344 @@
+<div class="card-management">
+  <div class="control-menu">
+    <div class="item">
+      <div class="label">Name</div>
+      <div class="content">
+        <input
+          nz-input
+          placeholder="cardnum/tag"
+          [(ngModel)]="searchTag"
+          class="inp"
+        />
+      </div>
+    </div>
+    <div class="item">
+      <div class="label">卡状态</div>
+      <div class="content">
+        <nz-select [(ngModel)]="cardStatus" class="sel">
+          <nz-option nzValue="" nzLabel="请选择"></nz-option>
+          <nz-option nzValue="ACTIVE" nzLabel="ACTIVE"></nz-option>
+          <nz-option nzValue="EXPIRED" nzLabel="EXPIRED"></nz-option>
+          <nz-option nzValue="CANCELED" nzLabel="CANCELED"></nz-option>
+          <nz-option nzValue="SUSPENDED" nzLabel="SUSPENDED"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <button nz-button nzType="primary" (click)="search()" [nzLoading]="cardListLoading" class="marginL10">
+      <i nz-icon nzType="search"></i>Search
+    </button>
+    <div class="item">
+      <div class="label" *ngIf="cardListLoading">正在查询...</div>
+      <div class="label" *ngIf="!cardListLoading">查出 <i>{{dataList.length}}</i> 符合条件</div>
+    </div>
+  </div>
+  <div class="control-model">
+    <button
+      class="btns"
+      nz-button
+      [nzType]="'primary'"
+      (click)="newVisible = true"
+      [disabled]="!cancreateCard"
+    >
+      <span>{{cancreateCardMessage}}</span>
+    </button>
+    <!-- <button
+      class="btns"
+      nz-button
+      [nzType]="'primary'"
+      [disabled] = 'selectedCardList.length !== 1'
+      (click)="updateTagVisible = true"
+    >
+      <span>编辑Tag</span>
+    </button>
+    <button
+      class="btns"
+      nz-button
+      [nzType]="'primary'"
+      (click)="updateTagVisible = false"
+    >
+      <span>设置dailylimit</span>
+    </button> -->
+    <nz-modal
+      [(nzVisible)]="newVisible"
+      nzTitle="创建信用卡"
+      (nzOnCancel)="creatCardLoadCancel()"
+      nzCancelText="取消"
+      (nzOnOk)="creatCardLoadOk()"
+      nzOkText="确定"
+      [nzOkLoading]="creatCardLoading"
+      [nzOkDisabled]="!tag"
+      nzWrapClassName="createCardModal"
+      [nzMaskClosable]="false"
+    >
+    <div class="item">
+      <div class="label">卡名</div>
+      <input nz-input [(ngModel)]="name" [disabled]="true" />
+    </div>
+      <div class="item">
+        <div class="label">标签tag</div>
+        <input nz-input [(ngModel)]="tag" />
+      </div>
+      <div class="item">
+        <div class="label">每日限额</div>
+        <nz-input-number
+          [(ngModel)]="dailylimit"
+          [nzMin]="0"
+          [nzMax]="1000"
+          [nzStep]="1"
+        ></nz-input-number>
+        <div>   注：限额为0则表示没有限额</div>
+      </div>
+    </nz-modal>
+    <!-- <nz-modal
+      [(nzVisible)]="updateTagVisible"
+      nzTitle="修改信用卡tag"
+      (nzOnCancel)="updateTagCancel()"
+      nzCancelText="取消"
+      (nzOnOk)="updateTagOk(selectedCardList[0])"
+      nzOkText="确定"
+      [nzOkLoading]="updateTaging"
+      [nzOkDisabled]="!updateTag"
+      nzWrapClassName="createCardModal"
+    >
+      <div class="item">
+        <div class="label">标签tag</div>
+        <input nz-input [(ngModel)]="updateTag" />
+      </div>
+    </nz-modal> -->
+    <button
+      class="btns"
+      nz-button
+      nzType="primary"
+      (click)="dayTradeVisible = true;dayTradeFun(0,'init')"
+      *ngIf="selectedCardList.length  === 0"
+      [disabled]="cardListLoading || tradeListLoading"
+    >
+      查看全部卡流水
+    </button>
+    <button
+    class="btns"
+    nz-button
+    nzType="primary"
+    (click)="dayTradeVisible = true;dayTradeFun(0,'init')"
+    *ngIf = 'selectedCardList.length  === 1'
+    [disabled]="cardListLoading || tradeListLoading"
+  >
+    carId: {{selectedCardList[0]}} 流水
+  </button>
+    <nz-drawer
+      [nzClosable]="true"
+      [nzVisible]="dayTradeVisible"
+      [nzMaskClosable]="false"
+      nzPlacement="right"
+      [nzTitle]="selectedCardList.length===0?'全部卡流水':'账户流水carId: '+selectedCardList[0]"
+      [nzWidth]="800"
+      (nzOnClose)="dayTradeVisible = false"
+      nzWrapClassName="tradeListModal"
+    >
+    <div class="trade-search">
+      <div class="item">
+        <nz-range-picker
+      [nzShowTime]="{ nzFormat: 'HH:mm' }"
+      nzFormat="yyyy-MM-dd HH:mm"
+      [nzPlaceHolder]="['开始时间', '结束时间']"
+      [(ngModel)]="tradeDate"
+      (nzOnOk)="tradeListSearch($event)"
+    ></nz-range-picker>
+      </div>
+      <div class="item">
+        <button nz-button nzType="default"  nz-tooltip nzTooltipTitle="查所有" [disabled]="tradeListLoading" (click)="setTradeDate('all')">
+          所有
+        </button>
+      </div>
+      <div class="item">
+        <button nz-button nzType="default" [disabled]="tradeListLoading" (click)="setTradeDate('today')">
+          今天
+        </button>
+      </div>
+      <div class="item">
+        <button nz-button nzType="default" nz-tooltip nzTooltipTitle="本周一开始到今天" [disabled]="tradeListLoading" (click)="setTradeDate('week')">
+          最近一周
+        </button>
+      </div>
+      <div class="item">
+        <button nz-button nzType="default" nz-tooltip nzTooltipTitle="本月一日开始到今天" [disabled]="tradeListLoading" (click)="setTradeDate('month')">
+          最近一月
+        </button>
+      </div>
+      <div class="item">
+        <button nz-button nzType="primary" [nzLoading]="tradeListLoading" (click)="dayTradeFun(0, 'init')">
+          <i nz-icon nzType="search"></i>搜索
+        </button>
+      </div>
+    </div>
+    <div class="trade-country">
+      各币种当前页消费汇总&nbsp;&nbsp;&nbsp;&nbsp;
+      <nz-tag class="item" *ngFor="let item of tradeList?.amountTotal?.symbolType">
+        {{item}} : {{fixTotal(tradeList.amountTotal[item])}}
+      </nz-tag>
+    </div>
+      <div class="trade-list">
+        <nz-table #trades [nzData]="tradeList.items" [nzLoading]="tradeListLoading"
+        nzShowSizeChanger
+        [nzTotal]="tradeList.totalCount"
+        [nzPageSize]="tradePage.pageSize"
+        [nzPageIndex]="tradePage.pageIndex"
+        [nzPageSizeOptions]="[ 20, 50, 100 ,1]"
+        (nzPageIndexChange)="dayTradeFun($event,'index')"
+        (nzPageSizeChange)="dayTradeFun($event,'size')"
+        [nzFrontPagination]="false"
+        >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Time</th>
+              <th>Spent</th>
+              <th>Payee</th>
+              <th>Symbol</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let trade of trades.data">
+              <td>{{ trade.id }}</td>
+              <td>{{ trade.createdDate}}</td>
+              <td>{{ trade.amount }}</td>
+              <td>{{ trade.authorizationId }}</td>
+              <td [ngClass]="{notUsd: trade.symbol!=='USD'}">{{ trade.symbol }}</td>
+              <td>{{ trade.settled }}</td>
+            </tr>
+          </tbody>
+        </nz-table>
+      </div>
+    </nz-drawer>
+        <button
+        class="btns"
+        nz-button
+        nzType="primary"
+        (click)="getAllCarSpent('todaySpent')"
+        [disabled]="cardListLoading || tradeListLoading"
+      >
+      todaySpent
+      </button>
+      <button
+      class="btns"
+      nz-button
+      nzType="primary"
+      (click)="getAllCarSpent('weekSpent')"
+      [disabled]="cardListLoading || tradeListLoading"
+      nz-tooltip nzTooltipTitle="本周一开始到今天"
+    >
+    weekSpent
+    </button>
+    <button
+    class="btns"
+    nz-button
+    nzType="primary"
+    (click)="getAllCarSpent('monthSpent')"
+    [disabled]="cardListLoading || tradeListLoading"
+    nz-tooltip nzTooltipTitle="本月一日开始到今天"
+    >
+    monthSpent
+    </button>
+
+    <button
+    class="btns"
+    nz-button
+    nzType="primary"
+    (click)="getAllCarSpent('diyTimeSpent')"
+    [disabled]="cardListLoading || tradeListLoading"
+    nz-tooltip nzTooltipTitle="自定义日期查询"
+    >
+    自定义日期查询
+    </button>
+
+    <!-- <div class="item">
+      <div class="label">显示自定义日期开销</div>
+      <div class="content showCon">
+        <nz-switch
+          [(ngModel)]="showCardTradeDate"
+          nzCheckedChildren="ON"
+          nzUnCheckedChildren="OFF"
+        ></nz-switch>
+      </div>
+    </div> -->
+    <div class="item marginL10">
+      <nz-range-picker
+        [nzShowTime]="{ nzFormat: 'HH:mm' }"
+        nzFormat="yyyy-MM-dd HH:mm"
+        [nzPlaceHolder]="['Start Time', 'End Time']"
+        [(ngModel)]="allCardTradeDate"
+      ></nz-range-picker>
+    </div>
+
+  </div>
+  <div class="card-list">
+    <nz-table #cards [nzData]="dataList" [nzLoading]="cardListLoading || tradeListLoading" nzShowSizeChanger>
+      <thead>
+        <tr>
+          <th></th>
+          <th>cardid</th>
+          <th>dailylimit</th>
+          <th nz-tooltip nzTooltipTitle="前100条消费记录，不区分币种累加">{{spentType}}</th>
+          <th>cardnum</th>
+          <th>name</th>
+          <th>tag</th>
+          <th>expiration</th>
+          <th>cvv</th>
+          <th>willdeleteinday</th>
+          <th>status</th>
+          <th>actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of cards.data">
+          <td><label nz-checkbox [(ngModel)]="data.selected" (ngModelChange)="selectedCard(data)"></label></td>
+          <td>{{ data.cardId }}</td>
+          <td>{{ data.dailylimit?data.dailylimit:'不限'}}</td>
+          <td>{{ fixTotal(data.todaySpent) }}</td>
+          <td>{{ data.cardNum }}</td>
+          <td>{{ data.cardName }}</td>
+          <td>{{ data.tag }}</td>
+          <td>{{ data.expiration }}</td>
+          <td>{{ data.cvv }}</td>
+          <td>{{ data.willdeleteinday }}</td>
+          <td class="{{data.cardStatus}}Style">{{ data.cardStatus }}</td>
+          <td>
+            <button class="actionBtn" nz-button nzType="primary" (click)="editCardTag(data,updateTagModal)">编辑</button>
+            <button class="actionBtn" nz-button nzType="primary" *ngIf="data.cardStatus==='ACTIVE'" (click)="actionCard('cancel',data,'CANCELED')">Cancel</button>
+            <button class="actionBtn" nz-button nzType="primary" *ngIf="data.cardStatus==='ACTIVE'" (click)="actionCard('suspend',data,'SUSPENDED')">Suspend</button>
+            <button class="actionBtn" nz-button nzType="primary" *ngIf="data.cardStatus==='SUSPENDED'" (click)="actionCard('reactivate',data,'ACTIVE')">Reactivate</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>
+<ng-template #updateTagModal>
+  <div class="item">
+    <div class="label">templateId</div>
+    <input nz-input [(ngModel)]="updatetemplateId" [disabled]="true" />
+  </div>
+  <div class="item">
+    <div class="label">cardId</div>
+    <input nz-input [(ngModel)]="updateCardId" [disabled]="true" />
+  </div>
+  <div class="item">
+    <div class="label">cardNum</div>
+    <input nz-input [(ngModel)]="updateCardNum" [disabled]="true" />
+  </div>
+  <div class="item">
+    <div class="label">标签tag</div>
+    <input nz-input [(ngModel)]="updateTag" />
+  </div>
+  <div class="item">
+    <div class="label">每日限额</div>
+    <nz-input-number
+      [(ngModel)]="updateDailylimit"
+      [nzMin]="0"
+      [nzMax]="1000"
+      [nzStep]="1"
+    ></nz-input-number>
+    <div>   注：限额为0则表示没有限额</div>
+  </div>
+</ng-template>

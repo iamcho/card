@@ -1,0 +1,97 @@
+.card-management {
+  .control-menu {
+    display: flex;
+    .item {
+      display: flex;
+      .label {
+        line-height: 32px;
+        padding: 0 10px;
+        i {
+          font-style: normal;
+          border: 1px dashed red;
+          color: red;
+          border-radius: 10px;
+          padding: 0 10px;
+          line-height: 20px;
+          display: inline-block;
+        }
+      }
+      .content {
+        width: 200px;
+        .sel {
+          width: 100%;
+        }
+        .inp {
+          width: 100%;
+        }
+      }
+      .showCon {
+        line-height: 32px;
+        width: 65px;
+      }
+    }
+    .marginL10 {
+      margin-left: 10px;
+    }
+  }
+  .control-model {
+    margin: 20px 0;
+    display: flex;
+    .btns {
+      margin-right: 1px;
+      border-radius: 0;
+    }
+    .marginL10 {
+      margin-left: 10px;
+    }
+  }
+  .card-list {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    .ACTIVEStyle {
+      color: green;
+    }
+    .EXPIREDStyle {
+      color: cyan;
+    }
+    .actionBtn {
+      margin-right: 10px;
+    }
+  }
+}
+::ng-deep.createCardModal {
+  .item {
+    display: flex;
+    line-height: 32px;
+    margin-bottom: 10px;
+    .label {
+      width: 120px;
+      text-align: center;
+    }
+  }
+}
+::ng-deep.tradeListModal {
+  .trade-search {
+    display: flex;
+    margin: 0 0 20px 0;
+    .item {
+      margin-right: 10px;
+    }
+  }
+  .trade-country {
+    display: flex;
+    margin: 0 0 20px 0;
+    .item {
+      margin-right: 10px;
+      font-size: 14px;
+    }
+  }
+  .notUsd {
+    color: red;
+  }
+}
+::ng-deep.pageChange {
+  .ant-pagination {
+    margin: 20px 0;
+  }
+}

@@ -1,0 +1,22 @@
+.index {
+  .list {
+    display: flex;
+    .item {
+      flex: 1;
+      margin: 0 20px;
+      .label {
+        line-height: 32px;
+        background-color: #67708b;
+        padding: 0 20px;
+        color: #fff;
+      }
+      .cont {
+        font-size: 24px;
+        font-weight: 700;
+        padding: 20px;
+        text-align: center;
+        background-color: #f8f8f8;
+      }
+    }
+  }
+}
