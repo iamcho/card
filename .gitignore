@@ -3,7 +3,7 @@
 # server api
 /src/assets/api
 
-# compiled output
+# compiled output 
 /dist
 /tmp
 /out-tsc
