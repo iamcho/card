@@ -203,7 +203,7 @@
               <td>{{ trade.id }}</td>
               <td>{{ trade.createdDate}}</td>
               <td>{{ trade.amount }}</td>
-              <td>{{ trade.authorizationId }}</td>
+              <td>{{ trade.merchantName }}</td>
               <td [ngClass]="{notUsd: trade.symbol!=='USD'}">{{ trade.symbol }}</td>
               <td>{{ trade.settled }}</td>
             </tr>
