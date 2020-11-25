@@ -1,8 +1,8 @@
 <div class="index">
   <div class="list">
     <div class="item">
-      <div class="label">余额</div>
-      <div class="cont">{{ balances?.availableAmount.toLocaleString() }} {{ balances?.symbol }}</div>
+      <div class="label">可用余额</div>
+      <div class="cont">{{ balances.availableAmount.toLocaleString() }} {{ balances.symbol }}</div>
     </div>
     <div class="item">
       <div class="label">已开卡/可开卡</div>
@@ -12,6 +12,7 @@
       </div>
     </div>
   </div>
+  <div class="tips" *ngIf="balances.availableAmount <= 100">余额快耗尽，未避免影响使用，请联系管理员充值</div>
   <!-- <nz-countdown [nzValue]="deadline" [nzTitle]="'Day Level'" [nzFormat]="'D 天 H 时 m 分 s 秒'"></nz-countdown> -->
 </div>
 <!-- 1.卡status随时间改变问题 -->

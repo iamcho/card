@@ -60,7 +60,10 @@
             添加用户
           </div>
           <div class="user-name" (click)="updateUserModalvisible = true" *ngIf="isAdmin">
-            修改用户权限
+            修改开卡数
+          </div>
+          <div class="user-name" (click)="updateMoneyModalvisible = true" *ngIf="isAdmin">
+            充值金额
           </div>
           <div class="login-out" (click)="logout()" *ngIf="isLogin">
             退出
@@ -129,14 +132,27 @@ nzWrapClassName="loginModalCss"
     <div class="label">secret：</div>
     <div class="input-val"><input nz-input placeholder="请输入 secret" [(ngModel)]="secret" /></div>
   </div>
+  <div class="line">
+    <div class="label">可用额度 $：</div>
+    <div class="input-val maxNumBox">
+      <nz-input-number
+      [(ngModel)]="maxMoney"
+      [nzMin]="0"
+      [nzMax]="10000000"
+      [nzStep]="100"
+      class="maxNum"
+      ></nz-input-number>
+      <div class="margin20">注：0-10000000之间</div>
+    </div>
+  </div>
   <div class="btns">
-    <button nz-button nzType="primary" [nzLoading]="createLoading" [disabled]="!usr || !pwd || !keyy || !secret"  (click)="addUser()">注册</button>
+    <button nz-button nzType="primary" [nzLoading]="createLoading" [disabled]="!usr || !pwd || !keyy || !secret ||  (!maxMoney && maxMoney!==0)"  (click)="addUser()">注册</button>
   </div>
 </nz-modal>
 
 
 
-<nz-modal [(nzVisible)]="updateUserModalvisible" nzTitle="修改用户权限" (nzOnCancel)="updateUserModalvisible = false" 
+<nz-modal [(nzVisible)]="updateUserModalvisible" nzTitle="修改开卡数" (nzOnCancel)="updateUserModalvisible = false" 
 [nzCancelText]="null"
 [nzOkText]="null"
 [nzMaskClosable]="false"
@@ -164,5 +180,36 @@ nzWrapClassName="loginModalCss"
   </div>
   <div class="btns">
     <button nz-button nzType="primary" [nzLoading]="updateLoading" [disabled]="!updateUsr || (!updatecardNum && updatecardNum!==0)"  (click)="updateUser()">确定</button>
+  </div>
+</nz-modal>
+
+<nz-modal [(nzVisible)]="updateMoneyModalvisible" nzTitle="充值金额" (nzOnCancel)="updateMoneyModalvisible = false" 
+[nzCancelText]="null"
+[nzOkText]="null"
+[nzMaskClosable]="false"
+nzWrapClassName="loginModalCss"
+(nzOnOk)="handleOk()">
+  <div class="line">
+    <div class="label">用户名：</div>
+    <div class="input-val maxNumBox">
+      <input nz-input placeholder="请输入用户名" [(ngModel)]="updateUsr" />
+      <button nz-button nzType="primary" class="margin20" [disabled]="!updateUsr" (click)="getMaxMoney()">查看余额</button>
+    </div>
+  </div>
+  <div class="line">
+    <div class="label">充值金额：</div>
+    <div class="input-val maxNumBox">
+      <nz-input-number
+      [(ngModel)]="updateMoney"
+      [nzMin]="0"
+      [nzMax]="10000000"
+      [nzStep]="100"
+      class="maxNum"
+      ></nz-input-number>
+      <div class="margin20">注：0-10000000之间</div>
+    </div>
+  </div>
+  <div class="btns">
+    <button nz-button nzType="primary" [nzLoading]="updateMoneyLoading" [disabled]="!updateUsr || (!updateMoney && updateMoney!==0)"  (click)="updateMaxMoney()">确定</button>
   </div>
 </nz-modal>

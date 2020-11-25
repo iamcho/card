@@ -17,7 +17,6 @@ export class WelcomeComponent implements OnInit {
   public noLogin = true;
   ngOnInit() {
     this.getData();
-    this.getData3();
   }
   public getData() {
     this.http
@@ -26,17 +25,9 @@ export class WelcomeComponent implements OnInit {
         if (data.isLogin) {
           this.cardsNumLimit = data.cardsNumLimit;
           this.cardsHasOpend = data.cardsHasOpend;
+          this.balances.availableAmount = data.maxMoney;
         }
       });
   }
-  public getData3() {
-    this.http
-      .post('./assets/api/api.php', {
-        type: 'balances/default',
-        http: 'get'
-      })
-      .subscribe((data: any) => {
-        if (data.symbol) {this.balances = data; }
-      });
-  }
+
 }

@@ -172,7 +172,7 @@
       </div>
     </div>
     <div class="trade-country">
-      各币种当前页消费汇总&nbsp;&nbsp;&nbsp;&nbsp;
+      当前页消费换算成USD汇总&nbsp;&nbsp;&nbsp;&nbsp;
       <nz-tag class="item" *ngFor="let item of tradeList?.amountTotal?.symbolType">
         {{item}} : {{fixTotal(tradeList.amountTotal[item])}}
       </nz-tag>
@@ -192,7 +192,7 @@
             <tr>
               <th>ID</th>
               <th>Time</th>
-              <th>Spent</th>
+              <th>Spent/USD</th>
               <th>Payee</th>
               <th>Symbol</th>
               <th>Status</th>
@@ -202,7 +202,7 @@
             <tr *ngFor="let trade of trades.data">
               <td>{{ trade.id }}</td>
               <td>{{ trade.createdDate}}</td>
-              <td>{{ trade.amount }}</td>
+              <td>{{ trade.balanceAmount }}</td>
               <td>{{ trade.merchantName }}</td>
               <td [ngClass]="{notUsd: trade.symbol!=='USD'}">{{ trade.symbol }}</td>
               <td>{{ trade.settled }}</td>
@@ -279,7 +279,7 @@
           <th></th>
           <th>cardid</th>
           <th>dailylimit</th>
-          <th nz-tooltip nzTooltipTitle="前100条消费记录，不区分币种累加">{{spentType}}</th>
+          <th nz-tooltip nzTooltipTitle="前100条消费记录">{{spentType}}</th>
           <th>cardnum</th>
           <th>name</th>
           <th>tag</th>

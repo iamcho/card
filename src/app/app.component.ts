@@ -8,15 +8,23 @@ import { NzMessageService, NzModalService } from 'ng-zorro-antd';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+
+  constructor(private message: NzMessageService, private http: HttpClient, public modalCtr: NzModalService) {}
   isCollapsed = false;
   public loginModalvisible = false;
   public createUserModalvisible = false;
   public updateUserModalvisible = false;
+  public updateMoneyModalvisible = false;
+
   public loginLoading = false;
   public createLoading = false;
   public username = 'hiswift';
   public isLogin = false;
   public updateLoading = false;
+  public updateMoneyLoading = false;
+
+
   public isAdmin = false;
   public isLoginNm = '';
   public password = 'hiswift';
@@ -28,13 +36,12 @@ export class AppComponent {
   public keyy = '';
   public secret = '';
 
-
+  public maxMoney = 500;
+  public updateMoney = 500;
 
   public updateUsr = '';
   public updatecardNum = 0;
 
-
-  constructor(private message: NzMessageService, private http: HttpClient, public modalCtr: NzModalService) {}
 
   ngOnInit(): void {
     this.getStatus();
@@ -88,6 +95,7 @@ export class AppComponent {
           host : this.host,
           keyy: this.keyy,
           secret: this.secret,
+          maxMoney: this.maxMoney
         }
       })
       .subscribe((data: any) => {
@@ -135,6 +143,27 @@ export class AppComponent {
           }
         });
     }
+    /** 充值金额 */
+    public updateMaxMoney() {
+      this.updateMoneyLoading = true;
+      this.http
+        .post('./assets/api/sql.php', {
+          type: 'updateMoney',
+          data: {
+            updateUsr: this.updateUsr,
+            updateMoney: this.updateMoney - 0,
+          }
+        })
+        .subscribe((data: any) => {
+          this.updateMoneyLoading = false;
+          if (data.success) {
+            this.updateMoneyModalvisible = false;
+            this.message.create('success', data.message);
+          } else {
+            this.message.create('error', data.message);
+          }
+        });
+    }
     /** 获取用户信息 */
     public getUserCounts() {
       this.updateLoading = true;
@@ -149,6 +178,25 @@ export class AppComponent {
           this.updateLoading = false;
           if (data.success) {
             this.updatecardNum = data.cardsNumLimit;
+            this.message.create('success', data.message);
+          } else {
+            this.message.create('error', data.message);
+          }
+        });
+    }
+    /** 获取用户余额 */
+    public getMaxMoney() {
+      this.updateMoneyLoading = true;
+      this.http
+        .post('./assets/api/sql.php', {
+          type: 'getMaxMoney',
+          data: {
+            updateUsr: this.updateUsr,
+          }
+        })
+        .subscribe((data: any) => {
+          this.updateMoneyLoading = false;
+          if (data.success) {
             this.message.create('success', data.message);
           } else {
             this.message.create('error', data.message);

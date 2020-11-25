@@ -469,7 +469,7 @@ public updateTagOkLocal() {}
         const cardListFliterSpent = this.cardListFliterSpent;
         data.items.forEach(v => {
           const cardId = v.cardId;
-          const amount = v.amount;
+          const amount = v.balanceAmount;
           const indexOf = cardListFliterSpent.indexOf(cardId);
           if (indexOf > -1) {
             this.dataList[indexOf].todaySpent += amount;
@@ -483,8 +483,9 @@ public updateTagOkLocal() {}
       };
       data.items.forEach(v => {
         v.createdDate = this.timeFix(v.createdDate);
-        const symbol = v.symbol;
-        const amount = v.amount;
+        // const symbol = v.symbol;
+        const symbol = 'USD';
+        const amount = v.balanceAmount;
         if (amountTotal.symbolType.indexOf(symbol) < 0) {
           amountTotal.symbolType.push(symbol);
           amountTotal[symbol] = amount;
