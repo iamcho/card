@@ -1,0 +1,30 @@
+<div class="usersDashboard">
+  <div class="user-ctrl">
+    <div class="items">
+      <button nz-button nzType="primary" [nzSize]="size" nzShape="round">同步账单余额</button>
+      <nz-tag nzColor="default" class="tips">上次同步时间:{{userChargesUpdateTime}}</nz-tag>
+    </div>
+  </div>
+  <div class="user-list">
+    <nz-table #USERS [nzData]="userList" [nzLoading]="userListLoading">
+      <thead>
+        <tr>
+          <th>用户名</th>
+          <th>已开卡</th>
+          <th>可开卡</th>
+          <th>余额</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of USERS.data">
+          <td>{{ user.username }}</td>
+          <td>{{ user.cardsHasOpend }}</td>
+          <td>{{ user.cardsNumLimit }}</td>
+          <td>{{ user.maxMoney }}</td>
+          <td>.........</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

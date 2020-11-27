@@ -17,6 +17,7 @@ import { PutianxmComponent } from './pages/putianxm/putianxm.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { IdsComponent } from './pages/ids/ids.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
+import { UsersDashboardComponent } from './pages/usersDashboard/usersDashboard.component';
 import { CardManagementComponent } from './pages/card-management/card-management.component';
 
 registerLocaleData(en);
@@ -29,6 +30,7 @@ registerLocaleData(en);
     PutianxmComponent,
     IdsComponent,
     CalendarComponent,
+    UsersDashboardComponent,
     CardManagementComponent,
   ],
   imports: [

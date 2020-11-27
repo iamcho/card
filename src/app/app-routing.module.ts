@@ -5,6 +5,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { PutianxmComponent } from './pages/putianxm/putianxm.component';
 import { IdsComponent } from './pages/ids/ids.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
+import { UsersDashboardComponent } from './pages/usersDashboard/usersDashboard.component';
 import { CardManagementComponent } from './pages/card-management/card-management.component';
 
 const routes: Routes = [
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'calendar',
     component: CalendarComponent,
+  },
+  {
+    path: 'users-dashboard',
+    component: UsersDashboardComponent,
   },
   {
     path: 'card-management',
