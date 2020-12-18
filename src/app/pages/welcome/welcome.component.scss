@@ -1,9 +1,10 @@
 .index {
   .list {
     display: flex;
+    flex-wrap: wrap;
     .item {
-      flex: 1;
-      margin: 0 20px;
+      margin: 0 2%;
+      width: 46%;
       .label {
         line-height: 32px;
         background-color: #67708b;

@@ -1,0 +1,37 @@
+<div class="card-authorization">
+  <div class="user-list">
+    <nz-table #AUTHLIST [nzData]="authList" [nzLoading]="authListLoading"
+    nzShowSizeChanger
+    [nzTotal]="authTotalCount"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+    (nzPageIndexChange)="getAuthList($event,'index')"
+    [nzFrontPagination]="false"
+    >
+      <thead>
+        <tr>
+          <th>cardId</th>
+          <th>amount</th>
+          <th>merchantName</th>
+          <th>approved</th>
+          <th>cardChargeId</th>
+          <th>declineCode</th>
+          <th>timestamp</th>
+          <th>symbol</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let authorization of AUTHLIST.data">
+          <td>{{ authorization.cardId }}</td>
+          <td>{{ authorization.amount }}</td>
+          <td>{{ authorization.merchantName }}</td>
+          <td>{{ authorization.approved }}</td>
+          <td>{{ authorization.cardChargeId }}</td>
+          <td>{{ authorization.declineCode }}</td>
+          <td>{{ authorization.timestamp }}</td>
+          <td>{{ authorization.symbol }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

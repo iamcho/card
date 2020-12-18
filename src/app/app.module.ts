@@ -19,6 +19,7 @@ import { IdsComponent } from './pages/ids/ids.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { UsersDashboardComponent } from './pages/usersDashboard/usersDashboard.component';
 import { CardManagementComponent } from './pages/card-management/card-management.component';
+import { cardAuthorizationComponent } from './pages/card-authorization/card-authorization.component';
 
 registerLocaleData(en);
 
@@ -32,6 +33,7 @@ registerLocaleData(en);
     CalendarComponent,
     UsersDashboardComponent,
     CardManagementComponent,
+    cardAuthorizationComponent
   ],
   imports: [
     BrowserModule,

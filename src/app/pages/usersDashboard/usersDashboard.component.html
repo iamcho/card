@@ -1,8 +1,18 @@
 <div class="usersDashboard">
   <div class="user-ctrl">
     <div class="items">
-      <button nz-button nzType="primary" [nzSize]="size" nzShape="round">同步账单余额</button>
-      <nz-tag nzColor="default" class="tips">上次同步时间:{{userChargesUpdateTime}}</nz-tag>
+    <div *ngIf="showTestBtn">
+      fromDate: <input nz-input placeholder="Basic usage" [(ngModel)]="fromDate" />
+      <br />
+      toDate:<input nz-input placeholder="Basic usage" [(ngModel)]="toDate" />
+      <br />
+    </div>
+      <!-- <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getChargeRepot()">查看账单</button> -->
+      <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getCharge()" *ngIf="showTestBtn">同步账单余额</button>
+      <!-- <nz-tag nzColor="default" class="greenTips">昨日账单条数:{{result?.yeaterdayTotal}}</nz-tag> -->
+      <!-- <nz-tag nzColor="default" class="greenTips">账单总条数:{{result?.chargesTotal}}</nz-tag> -->
+      <nz-tag nzColor="default" class="greenTips">消费同步日期:{{timeFix(result?.lastUpdateTime)}}</nz-tag>
+      <nz-tag nzColor="default" class="tips">{{result?.tips}}</nz-tag>
     </div>
   </div>
   <div class="user-list">
@@ -13,7 +23,9 @@
           <th>已开卡</th>
           <th>可开卡</th>
           <th>余额</th>
-          <th>操作</th>
+          <th>昨日消费</th>
+          <th>总消费</th>
+          <!-- <th>操作</th> -->
         </tr>
       </thead>
       <tbody>
@@ -22,7 +34,9 @@
           <td>{{ user.cardsHasOpend }}</td>
           <td>{{ user.cardsNumLimit }}</td>
           <td>{{ user.maxMoney }}</td>
-          <td>.........</td>
+          <td>{{ fixTotal(user.yesterdaySpent) }}</td>
+          <td>{{ fixTotal(user.totalSpent) }}</td>
+          <!-- <td>.........</td> -->
         </tr>
       </tbody>
     </nz-table>

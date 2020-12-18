@@ -47,6 +47,12 @@ export class CardManagementComponent implements OnInit {
   public tradeList: any = {};
   public cardListLoading = false;
   ngOnInit() {
+    // if (/Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent) ) {
+    //   // Safari
+    //   // 时间控件有问题
+    // } else {
+
+    // }
     this.getCardsListLocal();
     this.checkInsertCardstatus();
   }
@@ -215,6 +221,7 @@ export class CardManagementComponent implements OnInit {
   public getDate(num: number) {
     const now = new Date();
     const t = new Date(new Date(now).getTime() + 86400000 * num);
+    // return new Date(t.getFullYear(), t.getMonth() + 1, t.getDate(), 0, 0, 0 ) ; safari 只支持这个
     return `${t.getFullYear()}-${this.zero(t.getMonth() + 1)}-${this.zero(t.getDate())} 00:00`;
   }
   public zero(num: number) {
@@ -238,6 +245,7 @@ export class CardManagementComponent implements OnInit {
   public creatCardLoadOk() {
     this.creatCardLoading = true;
     const mcc = this.MCC[ Math.ceil(Math.random() * 17)];
+    const tag = this.tag.replace(/	/g, '');
     const params = {
       symbol: 'USD',
       description: this.name,
@@ -246,13 +254,14 @@ export class CardManagementComponent implements OnInit {
       // nameOnCard: this.name,
       limitationTemplate: {
         name: this.name,
-        description: this.tag,
+        description: tag,
         windowLimitations: [
           {
             merchantScope_type: 'MCC',
             merchantScope_values: [mcc],
             window: 'DAY',
             amountLimit: this.dailylimit === 0 ? '' : this.dailylimit,
+            nonStrict: true
           }
         ],
         chargeLimitations: [

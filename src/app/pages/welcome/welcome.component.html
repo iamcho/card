@@ -11,10 +11,19 @@
         {{ cardsNumLimit.toLocaleString() }}
       </div>
     </div>
+    <div class="item">
+      <div class="label">昨日消费</div>
+      <div class="cont">
+        {{(balances.yesterdaySpent-0).toLocaleString()}}
+      </div>
+    </div>
+    <div class="item">
+      <div class="label">总消费</div>
+      <div class="cont">
+        {{(balances.totalSpent-0).toLocaleString()}}
+      </div>
+    </div>
   </div>
   <div class="tips" *ngIf="balances.availableAmount <= 100">余额快耗尽，未避免影响使用，请联系管理员充值</div>
   <!-- <nz-countdown [nzValue]="deadline" [nzTitle]="'Day Level'" [nzFormat]="'D 天 H 时 m 分 s 秒'"></nz-countdown> -->
 </div>
-<!-- 1.卡status随时间改变问题 -->
-<!-- 2.登录验证权限 -->
-<!-- 3.tag放在商户描述  ok -->
