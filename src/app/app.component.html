@@ -37,6 +37,9 @@
         </ul>
       </li>
     </ul>
+    <div class="notice" *ngIf="!isCollapsed">
+      建议使用Chrome浏览器,有问题联系及时联系客服人员
+    </div>
   </nz-sider>
   <nz-layout>
     <nz-header>
@@ -121,17 +124,17 @@ nzWrapClassName="loginModalCss"
     <!-- <div class="input-val"><input nz-input placeholder="请输入 host" [disabled]="true" [(ngModel)]="host" /></div> -->
     <nz-radio-group [(ngModel)]="host">
       <label nz-radio nzValue="https://integrations.meshpayments.com">正式环境</label>
-      <label nz-radio nzValue="https://staging-integrations.meshpayments.com">测试环境</label>
+      <label>测试环境请使用hiswift</label>
     </nz-radio-group>
   </div>
-  <div class="line">
+  <!-- <div class="line">
     <div class="label">key：</div>
     <div class="input-val"><input nz-input placeholder="请输入 key" [(ngModel)]="keyy" /></div>
   </div>
   <div class="line">
     <div class="label">secret：</div>
     <div class="input-val"><input nz-input placeholder="请输入 secret" [(ngModel)]="secret" /></div>
-  </div>
+  </div> -->
   <div class="line">
     <div class="label">可用额度 $：</div>
     <div class="input-val maxNumBox">
@@ -146,7 +149,7 @@ nzWrapClassName="loginModalCss"
     </div>
   </div>
   <div class="btns">
-    <button nz-button nzType="primary" [nzLoading]="createLoading" [disabled]="!usr || !pwd || !keyy || !secret ||  (!maxMoney && maxMoney!==0)"  (click)="addUser()">注册</button>
+    <button nz-button nzType="primary" [nzLoading]="createLoading" [disabled]="!usr || !pwd || !pwd2 || (!maxMoney && maxMoney!==0)"  (click)="addUser()">注册</button>
   </div>
 </nz-modal>
 

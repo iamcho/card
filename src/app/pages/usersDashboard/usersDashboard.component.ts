@@ -9,17 +9,17 @@ import { HttpClient } from '@angular/common/http';
 export class UsersDashboardComponent implements OnInit {
   public userListLoading = false;
   public userList: any = [];
-  public fromDate = '0';
-  public toDate = '0';
+  public fromDate: any = '0';
+  public toDate: any = '0';
   public showTestBtn = false;
   public result: any = {};
+  public canHidden = true;
+  // public deadline = Date.now() + 1000 * 60 * 60 * 24 * 2 + 1000 * 30;
   constructor(private message: NzMessageService, private http: HttpClient) {}
 
   ngOnInit() {
-    const show = localStorage.getItem('admin');
-    if (show && show === 'admin') {
-      this.showTestBtn = true;
-    }
+    const t = new Date();
+    this.toDate = new Date(t.getFullYear(), t.getMonth(), t.getDate(), 0, 0, 0).getTime();
     this.getChargeDetail();
     this.getUserList();
   }
@@ -32,6 +32,12 @@ public getChargeDetail() {
   .subscribe((data: any) => {
     if (data.success) {
       this.result = data.list[0];
+      this.fromDate =  this.result.lastUpdateTime;
+      if ( (this.toDate - 0) > (this.fromDate - 0)) {
+        this.canHidden = false;
+      } else {
+        this.canHidden = true;
+      }
     } else {
       this.message.create('error', data.message);
     }
@@ -70,26 +76,29 @@ public zero(num: number) {
   }
   return num;
 }
-// public getChargeRepot() {
-//   const quarms = [];
-//   // quarms.push('fromDate=' + new Date().getTime());
-//   // quarms.push('toDate=' + new Date().getTime());
-//   quarms.push('pageIndex=' + this.pageIndex);
-//   quarms.push('pageSize=' + this.pageSize);
-//   this.http
-//   .post('./assets/api/api.php', {
-//     // type: `charges?cardId=5912381307614154703&pageIndex=${pageIndex}&pageSize=${this.tradePage.pageSize}`,
-//     type: 'charges?' + quarms.join('&'),
-//     http: 'get'
-//   })
-//   .subscribe((data: any) => {
-//     this.userListLoading = false;
-//     console.error(data);
-// });
-// }
+/** 更新时间 */
+public updateSet(ft: any , tt: any) {
+  this.http
+  .post('./assets/api/sql.php', {
+    type: 'updateSet',
+    data: {
+      fromT: ft,
+      yesterdayTo: tt,
+    }
+  })
+  .subscribe((data: any) => {
+    if (data.success) {
+      this.fromDate = tt;
+      if ( (this.toDate - 0) > (this.fromDate - 0)) {
+        this.canHidden = false;
+      } else {
+        this.canHidden = true;
+      }
+    }
+  });
+}
 /** 获取订单 */
 public getCharge() {
-  console.log('getCharge');
   this.userListLoading = true;
   this.http
   .post('./assets/api/updateCharges.php', {
@@ -101,8 +110,14 @@ public getCharge() {
     toDate: this.toDate,
   })
   .subscribe((data: any) => {
-    this.userListLoading = false;
-    console.error(data);
+    if (data.success) {
+      this.message.create('success', data.message);
+      this.getUserList();
+      this.updateSet(this.fromDate,this.toDate);
+    } else {
+      this.userListLoading = false;
+      this.message.create('error', data.message);
+    }
 });
 }
 }

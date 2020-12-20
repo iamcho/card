@@ -1,18 +1,19 @@
 <div class="usersDashboard">
   <div class="user-ctrl">
     <div class="items">
-    <div *ngIf="showTestBtn">
-      fromDate: <input nz-input placeholder="Basic usage" [(ngModel)]="fromDate" />
-      <br />
-      toDate:<input nz-input placeholder="Basic usage" [(ngModel)]="toDate" />
-      <br />
+    <div class="getCharge">
+      <label>上次账单同步时间: {{timeFix(fromDate)}}</label>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="fromDate" disabled />
+      <label>昨天24点:{{timeFix(toDate)}}</label>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="toDate" disabled/>
+      <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getCharge()" [disabled]="canHidden || userListLoading" [nzLoading]="userListLoading">同步昨天之前的订单</button>
     </div>
       <!-- <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getChargeRepot()">查看账单</button> -->
-      <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getCharge()" *ngIf="showTestBtn">同步账单余额</button>
       <!-- <nz-tag nzColor="default" class="greenTips">昨日账单条数:{{result?.yeaterdayTotal}}</nz-tag> -->
       <!-- <nz-tag nzColor="default" class="greenTips">账单总条数:{{result?.chargesTotal}}</nz-tag> -->
-      <nz-tag nzColor="default" class="greenTips">消费同步日期:{{timeFix(result?.lastUpdateTime)}}</nz-tag>
-      <nz-tag nzColor="default" class="tips">{{result?.tips}}</nz-tag>
+      <!-- <nz-tag nzColor="default" class="greenTips">上次消费同步日期:{{timeFix(result?.lastUpdateTime)}}</nz-tag> -->
+      <!-- <nz-tag nzColor="default" class="tips">{{result?.tips}}</nz-tag> -->
+      <!-- <nz-countdown [nzValue]="deadline" [nzFormat]="'下次同步时间: D 天 H 时 m 分 s 秒'"></nz-countdown> -->
     </div>
   </div>
   <div class="user-list">

@@ -93,8 +93,8 @@ export class AppComponent {
           usr: this.usr,
           pwd: this.pwd,
           host : this.host,
-          keyy: this.keyy,
-          secret: this.secret,
+          // keyy: this.keyy,
+          // secret: this.secret,
           maxMoney: this.maxMoney
         }
       })

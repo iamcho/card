@@ -9,6 +9,17 @@
       .tips {
         color: red;
       }
+      .getCharge {
+        display: flex;
+        label {
+          width: 290px;
+          line-height: 32px;
+          text-align: right;
+        }
+        input {
+          width: 150px;
+        }
+      }
     }
   }
   .user-list {
