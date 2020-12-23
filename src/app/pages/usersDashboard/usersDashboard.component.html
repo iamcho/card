@@ -4,9 +4,9 @@
     <div class="getCharge">
       <label>上次账单同步时间: {{timeFix(fromDate)}}</label>
       <input nz-input placeholder="Basic usage" [(ngModel)]="fromDate" disabled />
-      <label>昨天24点:{{timeFix(toDate)}}</label>
-      <input nz-input placeholder="Basic usage" [(ngModel)]="toDate" disabled/>
-      <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getCharge()" [disabled]="canHidden || userListLoading" [nzLoading]="userListLoading">同步昨天之前的订单</button>
+      <!-- <label>昨天24点:{{timeFix(toDate)}}</label> -->
+      <!-- <input nz-input placeholder="Basic usage" [(ngModel)]="toDate" disabled/> -->
+      <!-- <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getCharge()" [disabled]="canHidden || userListLoading" [nzLoading]="userListLoading">同步昨天之前的订单</button> -->
     </div>
       <!-- <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getChargeRepot()">查看账单</button> -->
       <!-- <nz-tag nzColor="default" class="greenTips">昨日账单条数:{{result?.yeaterdayTotal}}</nz-tag> -->
