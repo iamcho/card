@@ -52,6 +52,12 @@
           ></i>
         </span>
         <div class="user-set">
+          <!-- <div class="count-time" *ngIf="showCount">
+            <nz-countdown [nzValue]="deadline" [nzFormat]="'下次同步时间: H 时 m 分 s 秒'" (nzCountdownFinish)="countdownFinish()"></nz-countdown>
+          </div> -->
+          <div class="count-time">
+            <div class="hasUpdated">大概每天北京时间11:30同步昨天订单</div>
+          </div>
           <div class="space"></div>
           <div class="login-in" (click)="loginModalvisible = true" *ngIf="!isLogin">
             登录
@@ -60,7 +66,7 @@
             {{isLoginNm}}
           </div>
           <div class="user-name" (click)="createUserModalvisible = true" *ngIf="isAdmin">
-            添加用户
+            添加用户{{showCount}}
           </div>
           <div class="user-name" (click)="updateUserModalvisible = true" *ngIf="isAdmin">
             修改开卡数

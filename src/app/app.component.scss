@@ -87,6 +87,30 @@ nz-header {
         transition: all 0.3s;
       }
     }
+    .count-time {
+      line-height: 64px;
+      cursor: inherit !important;
+      // ::ng-deep.ant-statistic-content {
+      //   line-height: 52px;
+      // }
+      // ::ng-deep.ant-statistic-content-value {
+      //   font-size: 14x;
+      //   color: #c8152d;
+      // }
+      &:hover {
+        color: transparent !important;
+        border-bottom: 2px solid transparent !important;
+        transition: all 0.3s;
+      }
+      .hasUpdated {
+        cursor: inherit !important;
+        &:hover {
+          color: rgba(0, 0, 0, 0.65) !important;
+          border-bottom: 2px solid transparent !important;
+          transition: all 0.3s;
+        }
+      }
+    }
     .space {
       flex: 1;
     }
