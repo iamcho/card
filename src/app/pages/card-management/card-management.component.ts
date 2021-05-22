@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-import { Component, OnInit , TemplateRef} from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import * as Mock from 'mockjs';
 @Component({
   selector: 'app-card-management',
@@ -9,7 +9,7 @@ import * as Mock from 'mockjs';
 })
 export class CardManagementComponent implements OnInit {
   constructor(private message: NzMessageService, private http: HttpClient,
-              public modalCtr: NzModalService) {}
+    public modalCtr: NzModalService) { }
   public searchTag = '';
   public tag = '';
   public cancreateCard = false; // 是否可以创建信用卡
@@ -40,7 +40,7 @@ export class CardManagementComponent implements OnInit {
   public spentType = 'todaySpent';
   public selectedCardList: any = []; // 选择卡列表
   public MCC = ['3501', '3503', '3504', '3509', '3512', '6545', '4582',
-  '5962', '7011', '7012', '7033', '7841', '7911', '7932', '7941', '7991', '7994', '7995'];
+    '5962', '7011', '7012', '7033', '7841', '7911', '7932', '7941', '7991', '7994', '7995'];
   public originData: any = []; // 原始数据
   public dataList: any = [
   ]; // 搜索处理后的数据
@@ -75,80 +75,80 @@ export class CardManagementComponent implements OnInit {
   //     });
   // }
 
-    /** 获取本地卡列表 */
-    public getCardsListLocal() {
-      this.cardListLoading = true;
-      this.http
-        .post('./assets/api/sql.php', {
-          type: 'getCardsListLocal',
-        })
-        .subscribe((data: any) => {
-          this.cardListLoading = false;
-          if (data.success) {
-            this.selectedCardList = [];
-            const cardListFliterSpent = [];
-            data.list.forEach(v => {
-              v.willdeleteinday = this.timeFix(v.willdeleteinday - 0);
-              v.todaySpent = 0;
-              cardListFliterSpent.push(v.cardId);
-            });
-            this.originData = data.list;
-            this.cardListFliterSpent = cardListFliterSpent;
-            this.dataList = [].concat(this.originData);
+  /** 获取本地卡列表 */
+  public getCardsListLocal() {
+    this.cardListLoading = true;
+    this.http
+      .post('./assets/api/sql.php', {
+        type: 'getCardsListLocal',
+      })
+      .subscribe((data: any) => {
+        this.cardListLoading = false;
+        if (data.success) {
+          this.selectedCardList = [];
+          const cardListFliterSpent = [];
+          data.list.forEach(v => {
+            v.willdeleteinday = this.timeFix(v.willdeleteinday - 0);
+            v.todaySpent = 0;
+            cardListFliterSpent.push(v.cardId);
+          });
+          this.originData = data.list;
+          this.cardListFliterSpent = cardListFliterSpent;
+          this.dataList = [].concat(this.originData);
 
-                      // 获取100条消费记录
-            this.getAllCarSpent('todaySpent');
-                      // 首页信用卡加上日消费数据
-          } else {
-            this.message.create('error', data.message);
-          }
-        });
-    }
-    /** 获取所有卡周期100条消费记录 */
-    public getAllCarSpent(type: string) {
-      this.tradePage.pageSize = 100;
-      this.spentType = type;
-      this.dataList.forEach(v => {
-        v.todaySpent = 0;
+          // 获取100条消费记录
+          this.getAllCarSpent('todaySpent');
+          // 首页信用卡加上日消费数据
+        } else {
+          this.message.create('error', data.message);
+        }
       });
-      if (type === 'todaySpent') {
-        this.allCardTradeDate = [this.getDate(0), this.getDate(1)];
-        this.tradeDate = [this.getDate(0), this.getDate(1)];
-      }
-      if (type === 'weekSpent') {
-        this.allCardTradeDate = [this.getFirstDayOfWeek(), this.getDate(1)];
-        this.tradeDate = [this.getFirstDayOfWeek(), this.getDate(1)];
-      }
-      if (type === 'monthSpent') {
-        this.allCardTradeDate = [this.getFirstDayOfMonth(), this.getDate(1)];
-        this.tradeDate = [this.getFirstDayOfMonth(), this.getDate(1)];
-      }
-      if (type === 'diyTimeSpent') {
-          // 自定义查询日期开启
-          const allCardTradeDate = this.allCardTradeDate;
-          const tradeDate = [null, null];
-          if (allCardTradeDate && allCardTradeDate[0]) {
-                tradeDate[0] = this.timeFix(allCardTradeDate[0]);
-              }
-          if (allCardTradeDate && allCardTradeDate[1]) {
-                tradeDate[1] = this.timeFix(allCardTradeDate[1]);
-              }
-          this.tradeDate = [tradeDate[0], tradeDate[1]];
-      }
-      this.dayTradeFun(0, 'init', true);
+  }
+  /** 获取所有卡周期100条消费记录 */
+  public getAllCarSpent(type: string) {
+    this.tradePage.pageSize = 100;
+    this.spentType = type;
+    this.dataList.forEach(v => {
+      v.todaySpent = 0;
+    });
+    if (type === 'todaySpent') {
+      this.allCardTradeDate = [this.getDate(0), this.getDate(1)];
+      this.tradeDate = [this.getDate(0), this.getDate(1)];
     }
+    if (type === 'weekSpent') {
+      this.allCardTradeDate = [this.getFirstDayOfWeek(), this.getDate(1)];
+      this.tradeDate = [this.getFirstDayOfWeek(), this.getDate(1)];
+    }
+    if (type === 'monthSpent') {
+      this.allCardTradeDate = [this.getFirstDayOfMonth(), this.getDate(1)];
+      this.tradeDate = [this.getFirstDayOfMonth(), this.getDate(1)];
+    }
+    if (type === 'diyTimeSpent') {
+      // 自定义查询日期开启
+      const allCardTradeDate = this.allCardTradeDate;
+      const tradeDate = [null, null];
+      if (allCardTradeDate && allCardTradeDate[0]) {
+        tradeDate[0] = this.timeFix(allCardTradeDate[0]);
+      }
+      if (allCardTradeDate && allCardTradeDate[1]) {
+        tradeDate[1] = this.timeFix(allCardTradeDate[1]);
+      }
+      this.tradeDate = [tradeDate[0], tradeDate[1]];
+    }
+    this.dayTradeFun(0, 'init', true);
+  }
   /** 获取卡 详情 */
   public getCardDetails(card: any) {
     this.cardListLoading = true;
     this.http
-    .post('./assets/api/api.php', {
-      type: 'cards/' + card.id,
-      http: 'get'
-    })
-    .subscribe((data: any) => {
-      this.cardListLoading = false;
-      card.cardDetails = data.cardDetails;
-    });
+      .post('./assets/api/api.php', {
+        type: 'cards/' + card.id,
+        http: 'get'
+      })
+      .subscribe((data: any) => {
+        this.cardListLoading = false;
+        card.cardDetails = data.cardDetails;
+      });
   }
   /** 操作卡 */
   public actionCard(type: string, card: any, newStatus: string) {
@@ -158,19 +158,19 @@ export class CardManagementComponent implements OnInit {
       nzOnOk: () => {
         this.cardListLoading = true;
         this.http
-        .post('./assets/api/api.php', {
-          type: 'cards/' + card.cardId + '/' + type,
-          http: 'post'
-        })
-        .subscribe((data: any) => {
-          if (data && data.message) {
-            this.cardListLoading = false;
-            this.message.create('error', data.message);
-          } else {
-            // card.status = newStatus;
-            this.actionCardLocal(type, card, newStatus);
-          }
-        });
+          .post('./assets/api/api.php', {
+            type: 'cards/' + card.cardId + '/' + type,
+            http: 'post'
+          })
+          .subscribe((data: any) => {
+            if (data && data.message) {
+              this.cardListLoading = false;
+              this.message.create('error', data.message);
+            } else {
+              // card.status = newStatus;
+              this.actionCardLocal(type, card, newStatus);
+            }
+          });
       },
       nzOkText: '确定',
       nzOnCancel: () => console.log('Cancel'),
@@ -180,42 +180,42 @@ export class CardManagementComponent implements OnInit {
   /** 同步操作卡 */
   public actionCardLocal(type: string, card: any, newStatus: string) {
     this.http
-    .post('./assets/api/sql.php', {
-      type: 'actionCard',
-      data: {type, cardId: card.cardId, newStatus}
-    })
-    .subscribe((data: any) => {
-      this.cardListLoading = false;
-      if (data.success) {
-        this.message.create('success', data.message);
-        card.cardStatus = newStatus;
-      } else {
-        this.message.create('error', data.message);
-      }
-    });
+      .post('./assets/api/sql.php', {
+        type: 'actionCard',
+        data: { type, cardId: card.cardId, newStatus }
+      })
+      .subscribe((data: any) => {
+        this.cardListLoading = false;
+        if (data.success) {
+          this.message.create('success', data.message);
+          card.cardStatus = newStatus;
+        } else {
+          this.message.create('error', data.message);
+        }
+      });
   }
   public timeFix(time: any) {
     const t = new Date(time);
-    const tt =  `${t.getFullYear()}-${this.zero(t.getMonth() + 1)}-${this.zero(t.getDate())}
+    const tt = `${t.getFullYear()}-${this.zero(t.getMonth() + 1)}-${this.zero(t.getDate())}
     ${this.zero(t.getHours())}:${this.zero(t.getMinutes())}:${this.zero(t.getSeconds())}`;
     return tt;
   }
   public timeFixx(t: any) {
-    return  `${t.getFullYear()}-${this.zero(t.getMonth() + 1)}-${this.zero(t.getDate())} 00:00`;
+    return `${t.getFullYear()}-${this.zero(t.getMonth() + 1)}-${this.zero(t.getDate())} 00:00`;
   }
-   // 获取这周的周一
+  // 获取这周的周一
   public getFirstDayOfWeek() {
     const date = new Date();
     const weekday = date.getDay() || 7;
     date.setDate(date.getDate() - weekday + 1);
     return this.timeFixx(date);
-   }
+  }
 
   // 获取当月第一天
- public getFirstDayOfMonth() {
-  const date = new Date();
-  date.setDate(1);
-  return this.timeFixx(date);
+  public getFirstDayOfMonth() {
+    const date = new Date();
+    date.setDate(1);
+    return this.timeFixx(date);
   }
 
   public getDate(num: number) {
@@ -233,18 +233,18 @@ export class CardManagementComponent implements OnInit {
   /** 检测是否可以创建卡 */
   public checkInsertCardstatus() {
     this.http
-    .post('./assets/api/sql.php', {
-      type: 'checkInsertCardstatus',
+      .post('./assets/api/sql.php', {
+        type: 'checkInsertCardstatus',
       })
-    .subscribe((data: any) => {
-      this.cancreateCard = data.success;
-      this.cancreateCardMessage = data.message;
-    });
+      .subscribe((data: any) => {
+        this.cancreateCard = data.success;
+        this.cancreateCardMessage = data.message;
+      });
   }
   /** 创建 卡 一卡一商户模板 */
   public creatCardLoadOk() {
     this.creatCardLoading = true;
-    const mcc = this.MCC[ Math.ceil(Math.random() * 17)];
+    // const mcc = this.MCC[Math.ceil(Math.random() * 17)];
     const tag = this.tag.replace(/	/g, '');
     const params = {
       symbol: 'USD',
@@ -257,37 +257,37 @@ export class CardManagementComponent implements OnInit {
         description: tag,
         windowLimitations: [
           {
-            merchantScope_type: 'MCC',
-            merchantScope_values: [mcc],
+            // merchantScope_type: 'MCC',
+            // merchantScope_values: [mcc], //修复限额问题
             window: 'DAY',
             amountLimit: this.dailylimit === 0 ? '' : this.dailylimit,
             nonStrict: true
           }
         ],
         chargeLimitations: [
-          {
-            merchantScope_type: 'MCC',
-            merchantScope_values: [mcc],
-            min: 0,
-            max: 999
-          }
+          // {
+          //   merchantScope_type: 'MCC',
+          //   merchantScope_values: [mcc],
+          //   min: 0,
+          //   max: 999
+          // }
         ]
       }
     };
     this.http
-    .post('./assets/api/insertCard.php', {
-      type: 'cards',
-      data:  params
+      .post('./assets/api/insertCard.php', {
+        type: 'cards',
+        data: params
       })
-    .subscribe((data: any) => {
-      // this.creatCardLoading = false;
-      if (data.id) {
-        this.insertCard(params, data);
-      } else {
-        this.creatCardLoading = false;
-        this.message.create('error', data.message);
-      }
-    });
+      .subscribe((data: any) => {
+        // this.creatCardLoading = false;
+        if (data.id) {
+          this.insertCard(params, data);
+        } else {
+          this.creatCardLoading = false;
+          this.message.create('error', data.message);
+        }
+      });
   }
   /** 同步插入卡 */
   public insertCard(postParams: any, getParams: any) {
@@ -297,29 +297,29 @@ export class CardManagementComponent implements OnInit {
       templateJson: JSON.stringify(postParams.limitationTemplate)
     }, getParams);
     this.http
-    .post('./assets/api/sql.php', {
-      type: 'insertCard',
-      data: query
+      .post('./assets/api/sql.php', {
+        type: 'insertCard',
+        data: query
       })
-    .subscribe((data: any) => {
-      this.creatCardLoading = false;
-      this.newVisible = false;
-      if (data.success) {
-        this.message.create('success', data.message);
-        if ((getParams.cardsHasOpend - 0) < (getParams.cardsNumLimit - 0)) {
-         this.cancreateCard = true;
-         this.cancreateCardMessage = '还能创建 ' + ((getParams.cardsNumLimit - 0) - (getParams.cardsHasOpend - 0)) + ' 张信用卡';
-        } else {
-        this.cancreateCard = false;
-        this.cancreateCardMessage = '数量超过限制，请联系管理员';
-        }
+      .subscribe((data: any) => {
+        this.creatCardLoading = false;
+        this.newVisible = false;
+        if (data.success) {
+          this.message.create('success', data.message);
+          if ((getParams.cardsHasOpend - 0) < (getParams.cardsNumLimit - 0)) {
+            this.cancreateCard = true;
+            this.cancreateCardMessage = '还能创建 ' + ((getParams.cardsNumLimit - 0) - (getParams.cardsHasOpend - 0)) + ' 张信用卡';
+          } else {
+            this.cancreateCard = false;
+            this.cancreateCardMessage = '数量超过限制，请联系管理员';
+          }
 
-        this.creatCardLoadCancel();
-        this.getCardsListLocal();
-      } else {
-        this.message.create('error', data.message);
-      }
-    });
+          this.creatCardLoadCancel();
+          this.getCardsListLocal();
+        } else {
+          this.message.create('error', data.message);
+        }
+      });
   }
   public creatCardLoadCancel() {
     this.tag = '';
@@ -331,24 +331,24 @@ export class CardManagementComponent implements OnInit {
   public updateTagOk(card: any) {
     this.updateTaging = true;
     this.http
-    .post('./assets/api/sql.php', {
-      type: 'updateTag',
-      data: {updateTag: this.updateTag, cardId: card}
+      .post('./assets/api/sql.php', {
+        type: 'updateTag',
+        data: { updateTag: this.updateTag, cardId: card }
       })
-    .subscribe((data: any) => {
-      this.updateTaging = false;
-      if (data.success) {
-        this.getCardsListLocal();
-        this.updateTagVisible = false;
-        this.message.create('success', data.message);
-      } else {
-        this.message.create('error', data.message);
-      }
-    });
+      .subscribe((data: any) => {
+        this.updateTaging = false;
+        if (data.success) {
+          this.getCardsListLocal();
+          this.updateTagVisible = false;
+          this.message.create('success', data.message);
+        } else {
+          this.message.create('error', data.message);
+        }
+      });
 
   }
   /** 同步编辑本地卡 */
-public updateTagOkLocal() {}
+  public updateTagOkLocal() { }
   public updateTagCancel() {
     this.updateTagVisible = false;
     this.updateTag = '';
@@ -386,44 +386,54 @@ public updateTagOkLocal() {}
           onClick: () => new Promise((resolve) => {
             const templateObj = JSON.parse(cardObj.templateJson);
             templateObj.description = this.updateTag;
-            templateObj.windowLimitations[0].amountLimit = this.updateDailylimit - 0;
+
+            /** 修复限额问题 */
+            templateObj.windowLimitations[0] = {
+              amountLimit: this.updateDailylimit - 0,
+              window: 'DAY',
+              nonStrict: true
+            }
+            templateObj.chargeLimitations = [];
+
+
+
             // 修改商户达到修改tag和dailyLimit
             this.http
-            .post('./assets/api/api.php', {
-              type: 'limitationsTemplates/' + cardObj.templateId,
-              http: 'put',
-              data:  templateObj
+              .post('./assets/api/api.php', {
+                type: 'limitationsTemplates/' + cardObj.templateId,
+                http: 'put',
+                data: templateObj
               })
-            .subscribe((data: any) => {
-              if (data.id) {
-                // 第三方修改成功，再来修改本地local
-                this.http
-                .post('./assets/api/sql.php', {
-                  type: 'updateTemplate',
-                  data: {
-                    updateTag: this.updateTag,
-                     updateDailylimit: this.updateDailylimit,
-                     templateId: cardObj.templateId,
-                     templateJson: JSON.stringify(templateObj)
-                    }
-                  })
-                .subscribe((dataa: any) => {
+              .subscribe((data: any) => {
+                if (data.id) {
+                  // 第三方修改成功，再来修改本地local
+                  this.http
+                    .post('./assets/api/sql.php', {
+                      type: 'updateTemplate',
+                      data: {
+                        updateTag: this.updateTag,
+                        updateDailylimit: this.updateDailylimit,
+                        templateId: cardObj.templateId,
+                        templateJson: JSON.stringify(templateObj)
+                      }
+                    })
+                    .subscribe((dataa: any) => {
+                      resolve(true);
+                      this.updateTagVisible = false;
+                      if (dataa.success) {
+                        card.tag = this.updateTag;
+                        card.dailylimit = this.updateDailylimit;
+                        this.message.create('success', dataa.message);
+                      } else {
+                        this.message.create('error', dataa.message);
+                      }
+                    });
+                  editCardTagModal.close();
+                } else {
                   resolve(true);
-                  this.updateTagVisible = false;
-                  if (dataa.success) {
-                    card.tag = this.updateTag;
-                    card.dailylimit = this.updateDailylimit;
-                    this.message.create('success', dataa.message);
-                  } else {
-                    this.message.create('error', dataa.message);
-                  }
-                });
-                editCardTagModal.close();
-              } else {
-                resolve(true);
-                this.message.create('error', data.message);
-              }
-            });
+                  this.message.create('error', data.message);
+                }
+              });
           })
         }
       ],
@@ -439,7 +449,7 @@ public updateTagOkLocal() {}
 
   }
   /** 查看信用卡流水 */
-  public  dayTradeFun(num, type, needReturn?: any) {
+  public dayTradeFun(num, type, needReturn?: any) {
     const quarms = [];
     if (this.selectedCardList.length === 1) {
       quarms.push('cardId=' + this.selectedCardList[0]);
@@ -462,49 +472,49 @@ public updateTagOkLocal() {}
       this.tradePage.pageSize = num;
     }
     this.tradeListLoading = true;
-    const pageIndex =   (this.tradePage.pageIndex - 1) * this.tradePage.pageSize; // mesh 翻页码
+    const pageIndex = (this.tradePage.pageIndex - 1) * this.tradePage.pageSize; // mesh 翻页码
     quarms.push('pageIndex=' + pageIndex);
     quarms.push('pageSize=' + this.tradePage.pageSize);
     this.http
-    .post('./assets/api/api.php', {
-      // type: `charges?cardId=5912381307614154703&pageIndex=${pageIndex}&pageSize=${this.tradePage.pageSize}`,
-      type: 'charges?' + quarms.join('&'),
-      http: 'get'
-    })
-    .subscribe((data: any) => {
-      this.tradeListLoading = false;
-      if (needReturn) {
-        //  首页信用卡加上日消费数据
-        const cardListFliterSpent = this.cardListFliterSpent;
-        data.items.forEach(v => {
-          const cardId = v.cardId;
-          const amount = v.balanceAmount;
-          const indexOf = cardListFliterSpent.indexOf(cardId);
-          if (indexOf > -1) {
-            this.dataList[indexOf].todaySpent += amount;
-          }
+      .post('./assets/api/api.php', {
+        // type: `charges?cardId=5912381307614154703&pageIndex=${pageIndex}&pageSize=${this.tradePage.pageSize}`,
+        type: 'charges?' + quarms.join('&'),
+        http: 'get'
+      })
+      .subscribe((data: any) => {
+        this.tradeListLoading = false;
+        if (needReturn) {
+          //  首页信用卡加上日消费数据
+          const cardListFliterSpent = this.cardListFliterSpent;
+          data.items.forEach(v => {
+            const cardId = v.cardId;
+            const amount = v.balanceAmount;
+            const indexOf = cardListFliterSpent.indexOf(cardId);
+            if (indexOf > -1) {
+              this.dataList[indexOf].todaySpent += amount;
+            }
 
-        });
-        return data;
-      }
-      const amountTotal: any = {
-        symbolType: [],
-      };
-      data.items.forEach(v => {
-        v.createdDate = this.timeFix(v.createdDate);
-        // const symbol = v.symbol;
-        const symbol = 'USD';
-        const amount = v.balanceAmount;
-        if (amountTotal.symbolType.indexOf(symbol) < 0) {
-          amountTotal.symbolType.push(symbol);
-          amountTotal[symbol] = amount;
-        } else {
-          amountTotal[symbol] += amount;
+          });
+          return data;
         }
+        const amountTotal: any = {
+          symbolType: [],
+        };
+        data.items.forEach(v => {
+          v.createdDate = this.timeFix(v.createdDate);
+          // const symbol = v.symbol;
+          const symbol = 'USD';
+          const amount = v.balanceAmount;
+          if (amountTotal.symbolType.indexOf(symbol) < 0) {
+            amountTotal.symbolType.push(symbol);
+            amountTotal[symbol] = amount;
+          } else {
+            amountTotal[symbol] += amount;
+          }
+        });
+        data.amountTotal = amountTotal;
+        this.tradeList = data;
       });
-      data.amountTotal = amountTotal;
-      this.tradeList = data;
-    });
   }
   public fixTotal(num) {
     return (num.toFixed(2) - 0).toLocaleString();
@@ -537,7 +547,7 @@ public updateTagOkLocal() {}
     let fliterStatusList = [];
     if (cardStatus) {
       this.originData.forEach(v => {
-        if ((cardStatus && v.cardStatus === cardStatus) ) {
+        if ((cardStatus && v.cardStatus === cardStatus)) {
           fliterStatusList.push(v);
         }
       });
@@ -547,12 +557,12 @@ public updateTagOkLocal() {}
     if (tag) {
       fliterStatusList.forEach(v => {
         if ((v.cardNum && v.cardNum.indexOf(tag) > -1) ||
-        (v.tag && v.tag.indexOf(tag) > -1)) {
+          (v.tag && v.tag.indexOf(tag) > -1)) {
           dateList.push(v);
-       }
+        }
       });
     } else {
-        dateList = fliterStatusList;
+      dateList = fliterStatusList;
     }
     this.dataList = dateList;
   }

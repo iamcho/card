@@ -1,3 +1,14 @@
-.calendar {
-  display: flex;
+.card-authorization {
+  .user-ctrl {
+    margin: 0 0 20px;
+    display: flex;
+    .items {
+      .tips {
+        color: red;
+      }
+    }
+  }
+  .user-list {
+    width: 100%;
+  }
 }

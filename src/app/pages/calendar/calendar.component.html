@@ -1,29 +1,30 @@
-<div class="calendar">
-  <nz-calendar>
-    <ul *nzDateCell="let date" class="events">
-      <ng-container [ngSwitch]="date.getDate()">
-        <ng-container *ngSwitchCase="8">
-          <li *ngFor="let item of listDataMap.eight">
-            <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
-          </li>
-        </ng-container>
-        <ng-container *ngSwitchCase="10">
-          <li *ngFor="let item of listDataMap.ten">
-            <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
-          </li>
-        </ng-container>
-        <ng-container *ngSwitchCase="11">
-          <li *ngFor="let item of listDataMap.eleven">
-            <nz-badge [nzStatus]="item.type" [nzText]="item.content"></nz-badge>
-          </li>
-        </ng-container>
-      </ng-container>
-    </ul>
-    <ng-container *nzMonthCell="let month">
-      <div *ngIf="getMonthData(month) as monthData" class="notes-month">
-        <section>{{ monthData }}</section>
-        <span>Backlog number</span>
-      </div>
-    </ng-container>
-  </nz-calendar>
+<div class="card-authorization">
+  <div class="user-list">
+    <nz-table #CHARGELIST [nzData]="list" [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="true">
+      <thead>
+        <tr>
+          <th>cardId</th>
+          <th>当地货币</th>
+          <th>美元</th>
+          <th>merchantName</th>
+          <th>authorizationId</th>
+          <th>createdDate</th>
+          <th>cardChargeId</th>
+          <th>同步时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let authorization of CHARGELIST.data">
+          <td>{{ authorization.cardId }}</td>
+          <td>{{ authorization.amount }} {{ authorization.symbol }}</td>
+          <td>{{ authorization.balanceAmount }}</td>
+          <td>{{ authorization.merchantName }}</td>
+          <td>{{ authorization.authorizationId }}</td>
+          <td>{{ authorization.createdDate }}</td>
+          <td>{{ authorization.id }}</td>
+          <td>{{ authorization.insertTime }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
 </div>
