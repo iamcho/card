@@ -29,4 +29,7 @@ export class CalendarComponent implements OnInit {
         }
       });
   }
+  public export() {
+    window.open(window.location.host+'/assets/api/export.php');
+  }
 }

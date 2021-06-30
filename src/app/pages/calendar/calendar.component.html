@@ -1,8 +1,14 @@
 <div class="card-authorization">
+  <div class="tips-box">
+  <b>复制该网址，新建标签页打开，自动导出账单</b>
+  <b class="red">https://hiswift.com/assets/api/export.php</b>
+  </div>
   <div class="user-list">
     <nz-table #CHARGELIST [nzData]="list" [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="true">
       <thead>
         <tr>
+          <th>tag</th>
+          <th>卡名</th>
           <th>cardId</th>
           <th>当地货币</th>
           <th>美元</th>
@@ -15,6 +21,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let authorization of CHARGELIST.data">
+          <td>{{ authorization?.tag || '-'}}</td>
+          <td>{{ authorization?.cardName || '-'}}</td>
           <td>{{ authorization.cardId }}</td>
           <td>{{ authorization.amount }} {{ authorization.symbol }}</td>
           <td>{{ authorization.balanceAmount }}</td>

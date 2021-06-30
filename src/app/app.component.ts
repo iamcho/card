@@ -16,9 +16,11 @@ export class AppComponent {
   public createUserModalvisible = false;
   public updateUserModalvisible = false;
   public updateMoneyModalvisible = false;
+  public changePsdModalvisible = false;
 
   public loginLoading = false;
   public createLoading = false;
+  public changePsdLoading = false;
   public username = 'hiswift';
   public isLogin = false;
   public updateLoading = false;
@@ -35,6 +37,10 @@ export class AppComponent {
   public host = 'https://integrations.meshpayments.com';
   public keyy = '';
   public secret = '';
+
+  public oldPwd = '';
+  public changePwd = '';
+  public changePwd2 = '';
 
   public maxMoney = 500;
   public updateMoney = 500;
@@ -119,6 +125,33 @@ export class AppComponent {
         if (data.success) {
           this.createUserModalvisible = false;
           this.message.create('success', data.message);
+        } else {
+          this.message.create('error', data.message);
+        }
+      });
+  }
+  /** 修改密码 */
+  public changePsdOk(){
+    if (this.changePwd2 !== this.changePwd) {
+      this.message.create('error', '请确认新密码是否一致');
+      return;
+    }
+    this.changePsdLoading = true;
+    this.http
+      .post('./assets/api/sql.php', {
+        type: 'changePsd',
+        data: {
+          oldPwd: this.oldPwd.replace(/	/g, ''),
+          changePwd: this.changePwd.replace(/	/g, ''),
+          isLoginNm:this.isLoginNm
+        }
+      })
+      .subscribe((data: any) => {
+        this.changePsdLoading = false;
+        if (data.success) {
+          this.changePsdModalvisible = false;
+          this.message.create('success', data.message);
+          this.logout();
         } else {
           this.message.create('error', data.message);
         }

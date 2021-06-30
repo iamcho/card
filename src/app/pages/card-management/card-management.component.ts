@@ -14,8 +14,11 @@ export class CardManagementComponent implements OnInit {
   public tag = '';
   public cancreateCard = false; // 是否可以创建信用卡
   public cancreateCardMessage = '创建信用卡'; // 是否可以创建信用卡提醒信息
-  public name = Mock.mock('@name').substr(0, 15);
+  // public name = Mock.mock('@name').substr(0, 15);
+  public name = '';
   public creatCardLoading = false;
+  public addChildrenLoading = false;
+  public childrenNameList:any = [];
   public tradeListLoading = false;
   public tradeDate: any = [this.getDate(0), this.getDate(1)];
   public tradePage: any = {
@@ -31,6 +34,7 @@ export class CardManagementComponent implements OnInit {
   public updateTagVisible = false;
   public updateTaging = false;
   public updateTag = '';
+  public updateName = '';
   public updateCardId = '';
   public updateCardNum = '';
   public updatetemplateId = '';
@@ -248,12 +252,12 @@ export class CardManagementComponent implements OnInit {
     const tag = this.tag.replace(/	/g, '');
     const params = {
       symbol: 'USD',
-      description: this.name,
+      description: this.name.replace(/	/g, ''),
       expirationInHours: 24 * 365,
       acceptedCurrencies: 'ALL',
       // nameOnCard: this.name,
       limitationTemplate: {
-        name: this.name,
+        name: this.name.replace(/	/g, ''),
         description: tag,
         windowLimitations: [
           {
@@ -323,7 +327,8 @@ export class CardManagementComponent implements OnInit {
   }
   public creatCardLoadCancel() {
     this.tag = '';
-    this.name = Mock.mock('@name').substr(0, 15);
+    // this.name = Mock.mock('@name').substr(0, 15);
+    this.name = '';
     this.dailylimit = 300;
     this.newVisible = false;
   }
@@ -361,6 +366,7 @@ export class CardManagementComponent implements OnInit {
     this.updateCardId = cardObj.cardId;
     this.updateCardNum = cardObj.cardNum;
     this.updatetemplateId = cardObj.templateId;
+    this.updateName =  JSON.parse(cardObj.templateJson).name;
     const editCardTagModal = this.modalCtr.create({
       nzTitle: '编辑Tag和Dailylimit',
       nzClassName: 'createCardModal',
@@ -386,6 +392,7 @@ export class CardManagementComponent implements OnInit {
           onClick: () => new Promise((resolve) => {
             const templateObj = JSON.parse(cardObj.templateJson);
             templateObj.description = this.updateTag;
+            templateObj.name = this.updateName;
 
             /** 修复限额问题 */
             templateObj.windowLimitations[0] = {
@@ -423,6 +430,7 @@ export class CardManagementComponent implements OnInit {
                       if (dataa.success) {
                         card.tag = this.updateTag;
                         card.dailylimit = this.updateDailylimit;
+                        card.templateJson = JSON.stringify(templateObj);
                         this.message.create('success', dataa.message);
                       } else {
                         this.message.create('error', dataa.message);
@@ -565,5 +573,42 @@ export class CardManagementComponent implements OnInit {
       dateList = fliterStatusList;
     }
     this.dataList = dateList;
+  }
+  public getObj(str,type){
+    return JSON.parse(str)[type];
+  }
+  public getChildren(){
+    this.addChildrenLoading = true;
+    this.http
+    .post('./assets/api/sql.php', {
+      type: 'getChildren',
+    })
+    .subscribe((data: any) => {
+      this.addChildrenLoading = false;
+      if (data.success) {
+       this.childrenNameList = data.message;
+      } else {
+        this.message.create('error', data.message);
+      }
+    });
+  }
+  public addChildren(){
+    this.addChildrenLoading = true;
+    this.http
+    .post('./assets/api/sql.php', {
+      type: 'addChildren',
+      data: {
+        name:this.name.replace(/	/g, ''),
+      }
+    })
+    .subscribe((data: any) => {
+      this.addChildrenLoading = false;
+      if (data.success) {
+        this.message.create('success', data.message);
+        this.getChildren();
+      } else {
+        this.message.create('error', data.message);
+      }
+    });
   }
 }

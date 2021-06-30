@@ -50,6 +50,9 @@
           <div class="user-name" *ngIf="isLogin">
             {{isLoginNm}}
           </div>
+          <div class="user-name" (click)="changePsdModalvisible = true" *ngIf="isLogin">
+            修改密码
+          </div>
           <div class="user-name" (click)="createUserModalvisible = true" *ngIf="isAdmin">
             添加用户
           </div>
@@ -80,7 +83,7 @@
   </div>
   <div class="line">
     <div class="label">密码：</div>
-    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="password" /></div>
+    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="password" type="password" /></div>
   </div>
   <div class="btns">
     <button nz-button nzType="primary" [nzLoading]="loginLoading" [disabled]="!username || !password"
@@ -94,15 +97,15 @@
   (nzOnOk)="handleOk()">
   <div class="line">
     <div class="label">用户名：</div>
-    <div class="input-val"><input nz-input placeholder="请输入用户名" [(ngModel)]="usr" /></div>
+    <div class="input-val"><input nz-input placeholder="请输入用户名,请使用字母、数字" [(ngModel)]="usr" /></div>
   </div>
   <div class="line">
     <div class="label">密码：</div>
-    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="pwd" /></div>
+    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="pwd" type="password" /></div>
   </div>
   <div class="line">
     <div class="label">确认密码：</div>
-    <div class="input-val"><input nz-input placeholder="请确认密码" [(ngModel)]="pwd2" /></div>
+    <div class="input-val"><input nz-input placeholder="请确认密码" [(ngModel)]="pwd2" type="password" /></div>
   </div>
   <div class="line">
     <div class="label">host：</div>
@@ -133,8 +136,26 @@
       [disabled]="!usr || !pwd || !pwd2 || (!maxMoney && maxMoney!==0)" (click)="addUser()">注册</button>
   </div>
 </nz-modal>
-
-
+<nz-modal [(nzVisible)]="changePsdModalvisible" nzTitle="修改密码 {{isLoginNm}}" (nzOnCancel)="changePsdModalvisible = false"
+  [nzCancelText]="null" [nzOkText]="null" [nzMaskClosable]="false" nzWrapClassName="loginModalCss"
+  (nzOnOk)="changePsdOk()">
+  <div class="line">
+    <div class="label">原密码：</div>
+    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="oldPwd" type="password" /></div>
+  </div>
+  <div class="line">
+    <div class="label">新密码：</div>
+    <div class="input-val"><input nz-input placeholder="请输入密码" [(ngModel)]="changePwd" type="password" /></div>
+  </div>
+  <div class="line">
+    <div class="label">确认新密码：</div>
+    <div class="input-val"><input nz-input placeholder="请确认密码" [(ngModel)]="changePwd2" type="password" /></div>
+  </div>
+  <div class="btns">
+    <button nz-button nzType="primary" [nzLoading]="changePsdLoading"
+      [disabled]="!oldPwd ||!changePwd || !changePwd2" (click)="changePsdOk()">修改</button>
+  </div>
+</nz-modal>
 
 <nz-modal [(nzVisible)]="updateUserModalvisible" nzTitle="修改开卡数" (nzOnCancel)="updateUserModalvisible = false"
   [nzCancelText]="null" [nzOkText]="null" [nzMaskClosable]="false" nzWrapClassName="loginModalCss"

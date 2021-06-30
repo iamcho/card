@@ -36,7 +36,7 @@
       class="btns"
       nz-button
       [nzType]="'primary'"
-      (click)="newVisible = true"
+      (click)="getChildren();newVisible = true"
       [disabled]="!cancreateCard"
     >
       <span>{{cancreateCardMessage}}</span>
@@ -66,17 +66,33 @@
       (nzOnOk)="creatCardLoadOk()"
       nzOkText="确定"
       [nzOkLoading]="creatCardLoading"
-      [nzOkDisabled]="!tag"
+      [nzOkDisabled]="!tag || !name"
       nzWrapClassName="createCardModal"
       [nzMaskClosable]="false"
     >
     <div class="item">
+      <div class="label">快捷选择子用户</div>
+      <nz-select [(ngModel)]="name" class="sel">
+        <nz-option nzValue="" nzLabel="快捷选择子用户"></nz-option>
+        <nz-option [nzValue]="item?.childName" [nzLabel]="item?.childName" *ngFor="let item of childrenNameList"></nz-option>
+      </nz-select>
+    </div>
+    <div class="item">
       <div class="label">卡名</div>
-      <input nz-input [(ngModel)]="name" [disabled]="true" />
+      <input nz-input [(ngModel)]="name" placeholder="尽量使用字母、数字、-，不超过15位"/>
+      <button
+      class="btns"
+      nz-button
+      nzType="primary"
+      (click)="addChildren()"
+      [disabled]="!name || addChildrenLoading"
+    >
+      添加到子账户
+    </button>
     </div>
       <div class="item">
         <div class="label">标签tag</div>
-        <input nz-input [(ngModel)]="tag" />
+        <input nz-input [(ngModel)]="tag" placeholder="尽量使用字母、数字、-，不超过15位" />
       </div>
       <div class="item">
         <div class="label">每日限额</div>
@@ -281,7 +297,8 @@
           <th>dailylimit</th>
           <th nz-tooltip nzTooltipTitle="前100条消费记录">{{spentType}}</th>
           <th>cardnum</th>
-          <th>name</th>
+          <!-- <th>name</th> -->
+          <th>卡名</th>
           <th>tag</th>
           <th>expiration</th>
           <th>cvv</th>
@@ -297,7 +314,8 @@
           <td>{{ data.dailylimit?data.dailylimit:'不限'}}</td>
           <td>{{ fixTotal(data.todaySpent) }}</td>
           <td>{{ data.cardNum }}</td>
-          <td>{{ data.cardName }}</td>
+          <!-- <td>{{ data.cardName }}</td> -->
+          <td>{{ getObj(data.templateJson,'name') }}</td>
           <td>{{ data.tag }}</td>
           <td>{{ data.expiration }}</td>
           <td>{{ data.cvv }}</td>
@@ -326,6 +344,10 @@
   <div class="item">
     <div class="label">cardNum</div>
     <input nz-input [(ngModel)]="updateCardNum" [disabled]="true" />
+  </div>
+  <div class="item">
+    <div class="label">卡名</div>
+    <input nz-input [(ngModel)]="updateName"/>
   </div>
   <div class="item">
     <div class="label">标签tag</div>
