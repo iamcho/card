@@ -21,7 +21,7 @@ export class AppComponent {
   public loginLoading = false;
   public createLoading = false;
   public changePsdLoading = false;
-  public username = 'hiswift';
+  public username = '';
   public isLogin = false;
   public updateLoading = false;
   public updateMoneyLoading = false;
@@ -29,7 +29,7 @@ export class AppComponent {
 
   public isAdmin = false;
   public isLoginNm = '';
-  public password = 'hiswift';
+  public password = '';
 
   public usr = '';
   public pwd = '';

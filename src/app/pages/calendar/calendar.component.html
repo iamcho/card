@@ -1,10 +1,16 @@
 <div class="card-authorization">
   <div class="tips-box">
-  <b>复制该网址，新建标签页打开，自动导出账单</b>
-  <b class="red">https://hiswift.com/assets/api/export.php</b>
+    <b>复制该网址，新建标签页打开，自动导出账单</b>
+    <b class="red">https://hiswift.com/assets/api/export.php</b>
   </div>
   <div class="user-list">
-    <nz-table #CHARGELIST [nzData]="list" [nzLoading]="loading" nzShowSizeChanger [nzFrontPagination]="true">
+    <nz-table
+      #CHARGELIST
+      [nzData]="list"
+      [nzLoading]="loading"
+      nzShowSizeChanger
+      [nzFrontPagination]="true"
+    >
       <thead>
         <tr>
           <th>tag</th>
@@ -21,14 +27,14 @@
       </thead>
       <tbody>
         <tr *ngFor="let authorization of CHARGELIST.data">
-          <td>{{ authorization?.tag || '-'}}</td>
-          <td>{{ authorization?.cardName || '-'}}</td>
+          <td>{{ authorization?.tag || "-" }}</td>
+          <td>{{ authorization?.cardName || "-" }}</td>
           <td>{{ authorization.cardId }}</td>
           <td>{{ authorization.amount }} {{ authorization.symbol }}</td>
           <td>{{ authorization.balanceAmount }}</td>
           <td>{{ authorization.merchantName }}</td>
           <td>{{ authorization.authorizationId }}</td>
-          <td>{{ authorization.createdDate }}</td>
+          <td>{{ time2local(authorization.createdDate) }}</td>
           <td>{{ authorization.id }}</td>
           <td>{{ authorization.insertTime }}</td>
         </tr>

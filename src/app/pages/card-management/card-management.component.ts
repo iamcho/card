@@ -14,8 +14,8 @@ export class CardManagementComponent implements OnInit {
   public tag = '';
   public cancreateCard = false; // 是否可以创建信用卡
   public cancreateCardMessage = '创建信用卡'; // 是否可以创建信用卡提醒信息
-  // public name = Mock.mock('@name').substr(0, 15);
-  public name = '';
+  public name = Mock.mock('@name').substr(0, 15);
+  // public name = '';
   public creatCardLoading = false;
   public addChildrenLoading = false;
   public childrenNameList:any = [];
@@ -60,24 +60,6 @@ export class CardManagementComponent implements OnInit {
     this.getCardsListLocal();
     this.checkInsertCardstatus();
   }
-  /** 获取卡列表 */
-  // public getCardsList() {
-  //   this.cardListLoading = true;
-  //   this.http
-  //     .post('./assets/api/api.php', {
-  //       type: 'cards',
-  //       http: 'get'
-  //     })
-  //     .subscribe((data: any) => {
-  //       this.cardListLoading = false;
-  //       data.items.forEach(v => {
-  //         v.willdeleteinday = this.timeFix(v.expirationDate);
-  //         v.name = v.description;
-  //       });
-  //       this.originData = data.items;
-  //       this.dataList = [].concat(this.originData);
-  //     });
-  // }
 
   /** 获取本地卡列表 */
   public getCardsListLocal() {
@@ -265,7 +247,7 @@ export class CardManagementComponent implements OnInit {
             // merchantScope_values: [mcc], //修复限额问题
             window: 'DAY',
             amountLimit: this.dailylimit === 0 ? '' : this.dailylimit,
-            nonStrict: true
+            nonStrict: false
           }
         ],
         chargeLimitations: [
@@ -327,8 +309,8 @@ export class CardManagementComponent implements OnInit {
   }
   public creatCardLoadCancel() {
     this.tag = '';
-    // this.name = Mock.mock('@name').substr(0, 15);
-    this.name = '';
+    this.name = Mock.mock('@name').substr(0, 15);
+    // this.name = '';
     this.dailylimit = 300;
     this.newVisible = false;
   }
@@ -396,9 +378,9 @@ export class CardManagementComponent implements OnInit {
 
             /** 修复限额问题 */
             templateObj.windowLimitations[0] = {
-              amountLimit: this.updateDailylimit - 0,
+              amountLimit: this.updateDailylimit === 0 ? '':this.updateDailylimit,
               window: 'DAY',
-              nonStrict: true
+              nonStrict: false
             }
             templateObj.chargeLimitations = [];
 
@@ -419,7 +401,7 @@ export class CardManagementComponent implements OnInit {
                       type: 'updateTemplate',
                       data: {
                         updateTag: this.updateTag,
-                        updateDailylimit: this.updateDailylimit,
+                        updateDailylimit: this.updateDailylimit === 0 ? '':this.updateDailylimit,
                         templateId: cardObj.templateId,
                         templateJson: JSON.stringify(templateObj)
                       }
@@ -429,7 +411,7 @@ export class CardManagementComponent implements OnInit {
                       this.updateTagVisible = false;
                       if (dataa.success) {
                         card.tag = this.updateTag;
-                        card.dailylimit = this.updateDailylimit;
+                        card.dailylimit = this.updateDailylimit === 0 ? '':this.updateDailylimit;
                         card.templateJson = JSON.stringify(templateObj);
                         this.message.create('success', dataa.message);
                       } else {
@@ -610,5 +592,12 @@ export class CardManagementComponent implements OnInit {
         this.message.create('error', data.message);
       }
     });
+  }
+  time2local(unixTimestamp){
+    if(unixTimestamp){
+      return new Date(unixTimestamp).toLocaleString();
+    }else{
+      return '-'
+    }
   }
 }

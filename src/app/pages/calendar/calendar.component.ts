@@ -29,6 +29,13 @@ export class CalendarComponent implements OnInit {
         }
       });
   }
+  time2local(unixTimestamp){
+    if(unixTimestamp){
+      return new Date(unixTimestamp).toLocaleString();
+    }else{
+      return '-'
+    }
+  }
   public export() {
     window.open(window.location.host+'/assets/api/export.php');
   }

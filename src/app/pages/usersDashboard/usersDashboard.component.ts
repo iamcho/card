@@ -140,4 +140,27 @@ export class UsersDashboardComponent implements OnInit {
         }
       });
   }
+  public destory(username: string) {
+    this.message.create('error', '开发中');
+    return;
+    this.http
+      .post('./assets/api/sql.php', {
+        type: 'destoryUser',
+        data: { username }
+      })
+      .subscribe((data: any) => {
+        // if (data.success) {
+        //   this.chargeList = data.list;
+        // } else {
+        //   this.message.create('error', data.message);
+        // }
+      });
+  }
+  time2local(unixTimestamp){
+    if(unixTimestamp){
+      return new Date(unixTimestamp).toLocaleString();
+    }else{
+      return '-'
+    }
+  }
 }
