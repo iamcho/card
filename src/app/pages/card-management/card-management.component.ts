@@ -595,7 +595,7 @@ export class CardManagementComponent implements OnInit {
   }
   time2local(unixTimestamp){
     if(unixTimestamp){
-      return new Date(unixTimestamp).toLocaleString();
+      return new Date(unixTimestamp-0).toLocaleString();
     }else{
       return '-'
     }
