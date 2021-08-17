@@ -557,7 +557,12 @@ export class CardManagementComponent implements OnInit {
     this.dataList = dateList;
   }
   public getObj(str,type){
-    return JSON.parse(str)[type];
+    if(str){
+      return JSON.parse(str)[type];
+    }else{
+      return '-';
+    }
+    
   }
   public getChildren(){
     this.addChildrenLoading = true;
