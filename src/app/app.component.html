@@ -374,13 +374,13 @@
     <div class="input-val maxNumBox">
       <nz-input-number
         [(ngModel)]="updateMoney"
-        [nzMin]="0"
+        [nzMin]="-1000000"
         [nzMax]="10000000"
         [nzStep]="100"
         class="maxNum"
       >
       </nz-input-number>
-      <div class="margin20">注：0-10000000之间</div>
+      <div class="margin20">注：-1000000到10000000之间</div>
     </div>
   </div>
   <div class="btns">
