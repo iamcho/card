@@ -12,6 +12,8 @@ export class UsersDashboardComponent implements OnInit {
   public chargeList: any = [];
   public fromDate: any = '0';
   public toDate: any = '0';
+  public yeaterdayTotal:any = '0';
+  public chargesTotal:any = '0';
   public showTestBtn = false;
   public result: any = {};
   public canHidden = true;
@@ -36,6 +38,8 @@ export class UsersDashboardComponent implements OnInit {
         if (data.success) {
           this.result = data.list[0];
           this.fromDate = this.result.lastUpdateTime;
+          this.yeaterdayTotal = this.result.yeaterdayTotal;
+          this.chargesTotal = this.result.chargesTotal;
           if ((this.toDate - 0) > (this.fromDate - 0)) {
             this.canHidden = false;
           } else {
@@ -140,20 +144,36 @@ export class UsersDashboardComponent implements OnInit {
         }
       });
   }
-  public destory(username: string) {
-    this.message.create('error', '开发中');
-    return;
+  public searchCardStatus(username: string) {
     this.http
       .post('./assets/api/sql.php', {
-        type: 'destoryUser',
+        type: 'searchCardStatusUser',
         data: { username }
       })
       .subscribe((data: any) => {
-        // if (data.success) {
-        //   this.chargeList = data.list;
-        // } else {
-        //   this.message.create('error', data.message);
-        // }
+        if (data.success) {
+          let ACTIVE = 0;
+          let SUSPENDED = 0;
+          let EXPIRED = 0;
+          let CANCELED = 0;
+          data.list.forEach((v:any) => {
+            if(v.cardStatus==='ACTIVE'){
+              ACTIVE++;
+            };
+            if(v.cardStatus==='SUSPENDED'){
+              SUSPENDED++;
+            };
+            if(v.cardStatus==='EXPIRED'){
+              EXPIRED++;
+            };
+            if(v.cardStatus==='CANCELED'){
+              CANCELED++;
+            };
+          });
+          alert('正常:'+ACTIVE+'--暂停:'+SUSPENDED+'--过期:'+EXPIRED+'--注销:'+CANCELED);
+        } else {
+          this.message.create('error', data.message);
+        }
       });
   }
   time2local(unixTimestamp){

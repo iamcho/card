@@ -9,7 +9,8 @@
           [(ngModel)]="fromDate"
           disabled
         />
-        <!-- <label>昨天24点:{{timeFix(toDate)}}</label> -->
+        <label>昨日总消费:{{ yeaterdayTotal }} USD </label>
+        <label>昨日账单条数:{{ chargesTotal }} 笔</label>
         <!-- <input nz-input placeholder="Basic usage" [(ngModel)]="toDate" disabled/> -->
         <!-- <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getCharge()" [disabled]="canHidden || userListLoading" [nzLoading]="userListLoading">同步昨天之前的订单</button> -->
       </div>
@@ -39,10 +40,10 @@
         <tr *ngFor="let user of USERS.data">
           <td>{{ user.username }}</td>
           <td>{{ user.levelName }}</td>
-          <td>{{ user.cardsHasOpend }}正常:xx,暂停:xx,注销:xxx</td>
+          <td>{{ user.cardsHasOpend }}</td>
           <td>{{ user.cardsNumLimit }}</td>
           <td>{{ user.maxMoney }}</td>
-          <td>{{ fixTotal(user.yesterdaySpent) }}</td>
+          <td>暂时参考电报</td>
           <td>{{ fixTotal(user.totalSpent) }}</td>
           <td>
             <button
@@ -54,8 +55,12 @@
             </button>
           </td>
           <td>
-            <button nz-button nzType="primary" (click)="destory(user.username)">
-              注销
+            <button
+              nz-button
+              nzType="primary"
+              (click)="searchCardStatus(user.username)"
+            >
+              卡状态
             </button>
           </td>
         </tr>
