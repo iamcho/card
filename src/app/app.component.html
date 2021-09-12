@@ -34,6 +34,9 @@
           <li nz-menu-item nzMatchRouter *ngIf="isAdmin">
             <a routerLink="/users-dashboard">用户</a>
           </li>
+          <li nz-menu-item nzMatchRouter *ngIf="isAdmin">
+            <a routerLink="/pay-history">充值记录</a>
+          </li>
         </ul>
       </li>
     </ul>
@@ -56,7 +59,7 @@
             <nz-countdown [nzValue]="deadline" [nzFormat]="'下次同步时间: H 时 m 分 s 秒'" (nzCountdownFinish)="countdownFinish()"></nz-countdown>
           </div> -->
           <div class="count-time">
-            <div class="hasUpdated">订单每半小时同步</div>
+            <div class="hasUpdated">账单每半小时同步</div>
           </div>
           <div class="space"></div>
           <div

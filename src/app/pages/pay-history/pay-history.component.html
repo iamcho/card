@@ -1,0 +1,29 @@
+<div class="card-pay">
+  <div class="tips-box"></div>
+  <div class="user-list">
+    <nz-table
+      #PAYLIST
+      [nzData]="list"
+      [nzLoading]="loading"
+      nzShowSizeChanger
+      [nzFrontPagination]="true"
+    >
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>账户</th>
+          <th>充值金额</th>
+          <th>充值后余额</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pay of PAYLIST.data">
+          <td>{{ pay?.time }}</td>
+          <td>{{ pay?.username }}</td>
+          <td>{{ pay.amount }}</td>
+          <td>{{ pay.money }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

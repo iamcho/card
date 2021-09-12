@@ -9,6 +9,10 @@ import { HttpClient } from '@angular/common/http';
 export class UsersDashboardComponent implements OnInit {
   public userListLoading = false;
   public userList: any = [];
+  public yesterdayusernameList:any = [];
+  public yesterdayspentList:any = [];
+  public cardusernameList:any = [];
+  public cardStatusList:any = [];
   public chargeList: any = [];
   public fromDate: any = '0';
   public toDate: any = '0';
@@ -61,10 +65,38 @@ export class UsersDashboardComponent implements OnInit {
         this.userListLoading = false;
         if (data.success) {
           this.userList = data.list;
+          this.getYesterdaySpent();
+          this.searchCardStatus();
         } else {
           this.message.create('error', data.message);
         }
       });
+  }
+  /** 获取昨日用户消费 */
+  public getYesterdaySpent(){
+    this.userListLoading = true;
+    this.http
+    .post('./assets/api/sql.php', {
+      type: 'getYesterdaySpent',
+    })
+    .subscribe((data: any) => {
+      this.userListLoading = false;
+      if (data.success) {
+        this.yesterdayusernameList = data.list.map(v=>v.username);
+        this.yesterdayspentList = data.list.map(v=>v.yesterSpent);
+
+      } else {
+        this.message.create('error', data.message);
+      }
+    });
+  }
+  public getYesterdayByUsername(username:any){
+    let index:any = this.yesterdayusernameList.indexOf(username);
+    if(index>-1){
+      return parseFloat(parseFloat(this.yesterdayspentList[index]).toFixed(2)).toLocaleString();
+      
+    }
+    return 0;
   }
   public fixTotal(num) {
     const intNum: any = num - 0;
@@ -144,37 +176,30 @@ export class UsersDashboardComponent implements OnInit {
         }
       });
   }
-  public searchCardStatus(username: string) {
+  public searchCardStatus() {
     this.http
       .post('./assets/api/sql.php', {
         type: 'searchCardStatusUser',
-        data: { username }
+        data: { }
       })
       .subscribe((data: any) => {
         if (data.success) {
-          let ACTIVE = 0;
-          let SUSPENDED = 0;
-          let EXPIRED = 0;
-          let CANCELED = 0;
-          data.list.forEach((v:any) => {
-            if(v.cardStatus==='ACTIVE'){
-              ACTIVE++;
-            };
-            if(v.cardStatus==='SUSPENDED'){
-              SUSPENDED++;
-            };
-            if(v.cardStatus==='EXPIRED'){
-              EXPIRED++;
-            };
-            if(v.cardStatus==='CANCELED'){
-              CANCELED++;
-            };
+          this.cardusernameList = data.list.map(v=>v.username);
+          this.cardStatusList = data.list.map(v=>{
+            return `(正常:${v.ACTIVE}-暂停${v.SUSPENDED}-过期${v.EXPIRED}-注销${v.CANCELED})`
           });
-          alert('正常:'+ACTIVE+'--暂停:'+SUSPENDED+'--过期:'+EXPIRED+'--注销:'+CANCELED);
         } else {
           this.message.create('error', data.message);
         }
       });
+  }
+  public getCardStatus(username: any){
+    let index:any = this.cardusernameList.indexOf(username);
+    if(index>-1){
+      return this.cardStatusList[index];
+      
+    }
+    return '';
   }
   time2local(unixTimestamp){
     if(unixTimestamp){

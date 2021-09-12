@@ -10,7 +10,7 @@
           disabled
         />
         <label>昨日总消费:{{ yeaterdayTotal }} USD </label>
-        <label>昨日账单条数:{{ chargesTotal }} 笔</label>
+        <label>昨日账单数:{{ chargesTotal }} 笔</label>
         <!-- <input nz-input placeholder="Basic usage" [(ngModel)]="toDate" disabled/> -->
         <!-- <button nz-button nzType="primary" [nzSize]="size" nzShape="round" (click)="getCharge()" [disabled]="canHidden || userListLoading" [nzLoading]="userListLoading">同步昨天之前的订单</button> -->
       </div>
@@ -40,10 +40,10 @@
         <tr *ngFor="let user of USERS.data">
           <td>{{ user.username }}</td>
           <td>{{ user.levelName }}</td>
-          <td>{{ user.cardsHasOpend }}</td>
+          <td>{{ user.cardsHasOpend }}{{ getCardStatus(user.username) }}</td>
           <td>{{ user.cardsNumLimit }}</td>
           <td>{{ user.maxMoney }}</td>
-          <td>暂时参考电报</td>
+          <td>{{ getYesterdayByUsername(user.username) }}</td>
           <td>{{ fixTotal(user.totalSpent) }}</td>
           <td>
             <button
@@ -54,7 +54,7 @@
               查看账单
             </button>
           </td>
-          <td>
+          <!-- <td>
             <button
               nz-button
               nzType="primary"
@@ -62,7 +62,7 @@
             >
               卡状态
             </button>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </nz-table>

@@ -5,6 +5,7 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { PutianxmComponent } from './pages/putianxm/putianxm.component';
 import { IdsComponent } from './pages/ids/ids.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
+import { PayHistoryComponent } from './pages/pay-history/pay-history.component';
 import { UsersDashboardComponent } from './pages/usersDashboard/usersDashboard.component';
 import { CardManagementComponent } from './pages/card-management/card-management.component';
 import { cardAuthorizationComponent } from './pages/card-authorization/card-authorization.component';
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'calendar',
     component: CalendarComponent,
+  },
+  {
+    path: 'pay-history',
+    component: PayHistoryComponent,
   },
   {
     path: 'users-dashboard',
